@@ -1,0 +1,67 @@
+<template>
+  <section class="jumbotron text-center">
+
+    <div show.bind="!matchInProgress">
+      <h1>Good news, everyone!</h1>
+      <p>The table is open.</p>
+      <a href="/#/newGame" class="btn btn-lg btn-primary" >Start New Match</a>
+    </div>
+
+    <div show.bind="matchInProgress">
+      <h1>Current Match</h1>
+    
+      <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+          <div class="col-xs-5 col-xs-offset-1">
+            <h2>${currentMatch().heads.title}</h2>
+          </div>
+          <div class="col-xs-6">
+            <div class="col-xs-4 text-center ${score.tails < score.heads ? 'winning-score' : 'losing-score'}" repeat.for='score of currentMatch().scores'>
+              <h2>${score.heads}</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+          <div class="col-xs-5 col-xs-offset-1">
+            <h2>${currentMatch().tails.title}</h2>
+          </div>
+          <div class="col-xs-6">
+            <div class="col-xs-4 text-center ${score.tails > score.heads ? 'winning-score' : 'losing-score'}" repeat.for='score of currentMatch().scores'>
+              <h2>${score.tails}</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="row">
+        <h3>Game ${currentMatch().gameNum} In Progress</h3>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <h5><em>Game 3 started at ${currentMatch().gameStartTime}</em></h5>
+          <h5><em>Match started at ${currentMatch().startTime}</em></h5>
+        </div>
+      </div>
+
+      <hr/>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <h4 class="underline">History</h4>
+          <div class="row">
+            <div class="col-xs-12">
+              <h5>Match Record: ${currentMatch().history.allTimeMatchRecord}</h5>
+              <h5>Games Record: ${currentMatch().history.allTimeGameRecord}</h5>
+              <h5>Average Score: ${currentMatch().history.avgScore}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</template>
