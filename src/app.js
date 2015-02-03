@@ -8,7 +8,6 @@ export class App {
       config.title = 'SnappyFoos';
       config.map([
         { route: ['','home'],  moduleId: 'home',      nav: true, title:'Home' },
-        { route: 'flickr',        moduleId: 'flickr',       nav: true },
         { route: 'newGame',        moduleId: 'newGame',       nav: false }
       ]);
     });
