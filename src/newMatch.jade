@@ -1,0 +1,19 @@
+template
+  section.text-center.container
+    h1 Start New Match
+    form(role='form', submit.delegate='startNewGame()')
+      h3 Heads
+      .form-group
+        select.heads-form(selected-item.two-way='headsPlayer1')
+          option(repeat.for='player of players', value.bind='player._id', model.bind='player') ${player.name}
+      .form-group
+        select.heads-form(selected-item.two-way='headsPlayer2')
+          option(value.bind='player._id', model.bind='player', repeat.for='player of players') ${player.name}
+      h3 Tails
+      .form-group
+        select.tails-form(selected-item.two-way='tailsPlayer1')
+          option(value.bind='player._id', model.bind='player', repeat.for='player of players') ${player.name}
+      .form-group
+        select.tails-form(selected-item.two-way='tailsPlayer2')
+          option(value.bind='player._id', model.bind='player', repeat.for='player of players') ${player.name}
+      button.btn.btn-primary.btn-lg(disabled.bind='isWorking', type='submit') Submit

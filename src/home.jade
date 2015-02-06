@@ -1,0 +1,84 @@
+template
+  section.container.container-fluid
+    section.jumbotron.text-center
+      div(show.bind="!matchInProgress")
+        h1 Good news, everyone!
+        p The table is open.
+        a.btn.btn-lg.btn-primary(href="/#/newMatch") Start New Match
+      div(show.bind="matchInProgress")
+        h1 Current Match
+        .row
+          .col-sm-10.col-sm-offset-1
+            .col-xs-5.col-xs-offset-1
+            .col-xs-6
+              .col-xs-4.no-pad-xs.text-center(class='${currentMatch.gameNum === 1 ? \'current\' : \'\'}')
+                h5 1
+              .col-xs-4.no-pad-xs.text-center(class='${currentMatch.gameNum === 2 ? \'current\' : \'\'}')
+                h5 2
+              .col-xs-4.no-pad-xs.text-center(class='${currentMatch.gameNum === 3 ? \'current\' : \'\'}')
+                h5 3
+        .row
+          .col-sm-10.col-sm-offset-1
+            .col-xs-5.col-xs-offset-1.heads
+              h2 ${headsTitle}
+            .col-xs-6
+              .col-xs-4.no-pad-xs.text-center(class='${headsClass}' repeat.for='score of currentMatch.scores')
+                h2 ${score.heads}
+              .col-xs-4.no-pad-xs.text-center(if.bind="currentMatch.scores.length < 3")
+                h2 0
+              .col-xs-4.no-pad-xs.text-center(if.bind="currentMatch.scores.length < 2")
+                h2 0
+        .row
+          .col-sm-10.col-sm-offset-1
+            .col-xs-5.col-xs-offset-1.tails
+              h2 ${tailsTitle}
+            .col-xs-6
+              .col-xs-4.no-pad-xs.text-center(class='${tailsClass}' repeat.for='score of currentMatch.scores')
+                h2 ${score.tails}
+              .col-xs-4.no-pad-xs.text-center(if.bind="currentMatch.scores.length < 3")
+                h2 0
+              .col-xs-4.no-pad-xs.text-center(if.bind="currentMatch.scores.length < 2")
+                h2 0
+        .row.tall.stepper.heads-stepper(show.bind="startedMatch()")
+          .col-xs-4.minus.no-pad
+            button.btn.btn-expand(onclick="alert('Heads--')")
+              i.fa.fa-minus
+          .col-xs-4
+            h3 Heads
+          .col-xs-4.plus.no-pad
+            button.btn.btn-expand(onclick="alert('Heads++')")
+              i.fa.fa-plus
+        .row.tall.stepper.tails-stepper(show.bind="startedMatch()")
+          .col-xs-4.minus.no-pad
+            button.btn.btn-expand(onclick="alert('Tails--')")
+              i.fa.fa-minus
+          .col-xs-4
+            h3 Tails
+          .col-xs-4.plus.no-pad
+            button.btn.btn-expand(onclick="alert('Tails++')")
+              i.fa.fa-plus
+        .row(show.bind="startedMatch()")
+          .col-xs-12
+            button.btn.btn-danger.btn-lg End Game
+        .row(show.bind="!startedMatch()")
+          h3 Game ${currentMatch.gameNum} In Progress
+        .row(show.bind="!startedMatch()")
+          .col-xs-12
+            h5
+              em Game 3 started at ${moment(currentMatch.gameStartTime).format("h:mma")}
+            h5
+              em Match started at ${moment(currentMatch.startTime).format("h:mma")}
+        hr
+        //
+                 <div class="row">
+                    <div class="col-xs-12">
+                      <h4 class="underline">History</h4>
+                      <div class="row">
+                        <div class="col-xs-12">
+                          <h5>Match Record: ${currentMatch.history.allTimeMatchRecord}</h5>
+                          <h5>Games Record: ${currentMatch.history.allTimeGameRecord}</h5>
+                          <h5>Average Score: ${currentMatch.history.avgScore}</h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div> 
