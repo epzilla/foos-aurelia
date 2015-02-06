@@ -29,6 +29,7 @@ npm install
 
 ```
 jspm install -y
+```
 * Install bower dependencies
 
 ```
