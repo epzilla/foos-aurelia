@@ -4,7 +4,7 @@ A foosball scoretracker using the [Aurelia](http://aurelia.io) JavaScript MVC fr
 ## TODOs (in priority order)
 * ~~Livereload on client-side in "watch" step~~
 * ~~Convert to Jade instead of plain HTML~~
-* Convert to Stylus instead of plain CSS
+* ~~Convert to Stylus instead of plain CSS~~
 * Implement score increment/decrement logic
 * Implement end-game logic
 * Implement end-match logic (I think this is essentially already done)
