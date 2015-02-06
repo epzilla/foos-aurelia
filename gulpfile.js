@@ -9,6 +9,7 @@ var vinylPaths = require('vinyl-paths');
 var to5 = require('gulp-6to5');
 var jshint = require('gulp-jshint');
 var stylish = require('jshint-stylish');
+var jade = require('gulp-jade');
 var yuidoc = require('gulp-yuidoc');
 var changelog = require('conventional-changelog');
 var assign = Object.assign || require('object.assign');
@@ -26,6 +27,7 @@ var webdriver_update = require('gulp-protractor').webdriver_update;
 var path = {
   source:'src/**/*.js',
   html:'src/**/*.html',
+  jade: 'src/**/*.jade',
   style:'styles/**/*.css',
   img: 'src/img/**',
   imgOutput: 'dist/img',
@@ -77,6 +79,14 @@ gulp.task('nodemon', function () {
     });
 });
 
+// Compile changed Jade files to HTML and copy to dev_server
+gulp.task('jade', function () {
+  return gulp.src(path.jade)
+    .pipe(changed(path.output))
+    .pipe(jade({ pretty : true }))
+    .pipe(gulp.dest(path.output))
+    .pipe(livereload());
+});
 
 gulp.task('build-system', function () {
   return gulp.src(path.source)
@@ -168,7 +178,7 @@ gulp.task('build-dev-env', function () {
   tools.buildDevEnv();
 });
 
-gulp.task('serve', ['build', 'nodemon']);
+gulp.task('serve', ['build', 'jade', 'nodemon']);
 
 
 function reportChange(event){
@@ -179,6 +189,7 @@ function reportChange(event){
 gulp.task('watch', ['serve'], function() {
   livereload.listen();
   gulp.watch(path.source, ['build-system', livereload]).on('change', reportChange);
+  gulp.watch(path.jade, ['jade', livereload]).on('change', reportChange);
   gulp.watch(path.html, ['build-html', livereload]).on('change', reportChange);
   gulp.watch(path.style, livereload).on('change', reportChange);
 });
