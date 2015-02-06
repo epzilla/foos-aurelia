@@ -1,3 +1,7 @@
+/*jshint globalstrict: true*/
+'use strict';
+
+
 var gulp = require('gulp');
 var runSequence = require('run-sequence');
 var del = require('del');
@@ -5,7 +9,7 @@ var vinylPaths = require('vinyl-paths');
 var to5 = require('gulp-6to5');
 var jshint = require('gulp-jshint');
 var stylish = require('jshint-stylish');
-var yuidoc = require("gulp-yuidoc");
+var yuidoc = require('gulp-yuidoc');
 var changelog = require('conventional-changelog');
 var assign = Object.assign || require('object.assign');
 var fs = require('fs');
@@ -13,14 +17,18 @@ var bump = require('gulp-bump');
 var browserSync = require('browser-sync');
 var changed = require('gulp-changed');
 var plumber = require('gulp-plumber');
+var nodemon = require('gulp-nodemon');
+var imagemin = require('gulp-imagemin');
 var tools = require('aurelia-tools');
-var protractor = require("gulp-protractor").protractor;
+var protractor = require('gulp-protractor').protractor;
 var webdriver_update = require('gulp-protractor').webdriver_update;
 
 var path = {
   source:'src/**/*.js',
   html:'src/**/*.html',
   style:'styles/**/*.css',
+  img: 'src/img/**',
+  imgOutput: 'dist/img',
   output:'dist/',
   doc:'./doc',
   e2eSpecsSrc: 'test/e2e/src/*.js',
@@ -46,7 +54,7 @@ var compilerOptions = {
     indent: {
       parentheses: true,
       adjustMultilineComment: true,
-      style: "  ",
+      style: '  ',
       base: 0
     }
   }
@@ -58,6 +66,17 @@ gulp.task('clean', function() {
  return gulp.src([path.output])
     .pipe(vinylPaths(del));
 });
+
+// Run node server, watch for server-side changes and restart when they happen
+gulp.task('nodemon', function () {
+  nodemon(
+    {
+      script: './server.js',
+      ext: 'js,json',
+      nodeArgs: ['--debug']
+    });
+});
+
 
 gulp.task('build-system', function () {
   return gulp.src(path.source)
@@ -77,6 +96,12 @@ gulp.task('lint', function() {
   return gulp.src(path.source)
     .pipe(jshint(jshintConfig))
     .pipe(jshint.reporter(stylish));
+});
+
+gulp.task('images', function() {
+  return gulp.src(path.img)
+    .pipe(imagemin())
+    .pipe(gulp.dest(path.imgOutput));
 });
 
 gulp.task('doc-generate', function(){
@@ -110,7 +135,7 @@ gulp.task('changelog', function(callback) {
 gulp.task('build', function(callback) {
   return runSequence(
     'clean',
-    ['build-system', 'build-html'],
+    ['build-system', 'build-html', 'images'],
     callback
   );
 });
@@ -125,9 +150,9 @@ gulp.task('build-e2e', function () {
 });
 
 gulp.task('e2e', ['webdriver_update', 'build-e2e'], function(cb) {
-  return gulp.src(path.e2eSpecsDist + "/*.js")
+  return gulp.src(path.e2eSpecsDist + '/*.js')
   .pipe(protractor({
-      configFile: "protractor.conf.js",
+      configFile: 'protractor.conf.js',
       args: ['--baseUrl', 'http://127.0.0.1:9000']
   }))
   .on('error', function(e) { throw e; });
@@ -141,19 +166,22 @@ gulp.task('build-dev-env', function () {
   tools.buildDevEnv();
 });
 
-gulp.task('serve', ['build'], function(done) {
-  browserSync({
-    open: false,
-    port: 9000,
-    server: {
-      baseDir: ['.'],
-      middleware: function (req, res, next) {
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        next();
-      }
-    }
-  }, done);
-});
+// gulp.task('serve', ['build', 'nodemon'], function(done) {
+//   browserSync({
+//     open: false,
+//     port: 9000,
+//     server: {
+//       baseDir: ['.'],
+//       middleware: function (req, res, next) {
+//         res.setHeader('Access-Control-Allow-Origin', '*');
+//         next();
+//       }
+//     }
+//   }, done);
+// });
+
+gulp.task('serve', ['build', 'nodemon']);
+
 
 function reportChange(event){
   console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');

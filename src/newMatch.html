@@ -1,0 +1,31 @@
+<template>
+  <section class="text-center container">
+    <h1>Start New Match</h1>
+    <form role="form" submit.delegate="startNewGame()">
+      <h3>Heads</h3>
+      <div class="form-group">
+        <select selected-item.two-way="headsPlayer1">
+          <option repeat.for="player of players" value.bind="player._id" model.bind="player">${player.name}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <select selected-item.two-way="headsPlayer2">
+          <option value.bind='player._id' model.bind="player" repeat.for="player of players">${player.name}</option>
+        </select>
+      </div>
+      <h3>Tails</h3>
+      <div class="form-group">
+        <select selected-item.two-way="tailsPlayer1">
+          <option value.bind='player._id' model.bind="player" repeat.for="player of players">${player.name}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <select selected-item.two-way="tailsPlayer2">
+          <option value.bind='player._id' model.bind="player" repeat.for="player of players">${player.name}</option>
+        </select>
+      </div>
+      <button disabled.bind="isWorking" type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    
+  </section>
+</template>
