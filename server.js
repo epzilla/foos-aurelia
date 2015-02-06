@@ -5,7 +5,8 @@ var express      = require('express');
 var bodyParser   = require('body-parser');
 var app          = express();
 var morgan       = require('morgan');
-var path          = require('path');
+var path         = require('path');
+var conf         = require('./app/config');
 var routes       = require('./app/routes/api');
 var server       = require('http').createServer(app);
 
@@ -19,13 +20,20 @@ app.set('view engine', 'html');
 app.use(express.static(path.join(__dirname, '.')));
 app.set('views', path.join(__dirname, '.'));
 
-var port = process.env.PORT || 3000;
+if (conf.ENVIRONMENT === 'dev') {
+  app.use(require('connect-livereload')({
+    port: 35729
+  }));
+}
+
+var port = process.env.PORT || conf.PORT || 3000;
+var socket_port = conf.SOCKET_PORT || 9000;
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/foos');
 
-server.listen(9000, function() {
-  console.info('server listening on port 9000');
+server.listen(socket_port, function() {
+  console.info('server listening on port ' + socket_port);
 });
 
 var socket = require('socket.io').listen(server);

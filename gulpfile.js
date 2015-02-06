@@ -14,7 +14,7 @@ var changelog = require('conventional-changelog');
 var assign = Object.assign || require('object.assign');
 var fs = require('fs');
 var bump = require('gulp-bump');
-var browserSync = require('browser-sync');
+var livereload = require('gulp-livereload');
 var changed = require('gulp-changed');
 var plumber = require('gulp-plumber');
 var nodemon = require('gulp-nodemon');
@@ -83,13 +83,15 @@ gulp.task('build-system', function () {
     .pipe(plumber())
     .pipe(changed(path.output, {extension: '.js'}))
     .pipe(to5(assign({}, compilerOptions, {modules:'system'})))
-    .pipe(gulp.dest(path.output));
+    .pipe(gulp.dest(path.output))
+    .pipe(livereload());
 });
 
 gulp.task('build-html', function () {
   return gulp.src(path.html)
     .pipe(changed(path.output, {extension: '.html'}))
-    .pipe(gulp.dest(path.output));
+    .pipe(gulp.dest(path.output))
+    .pipe(livereload());
 });
 
 gulp.task('lint', function() {
@@ -166,31 +168,19 @@ gulp.task('build-dev-env', function () {
   tools.buildDevEnv();
 });
 
-// gulp.task('serve', ['build', 'nodemon'], function(done) {
-//   browserSync({
-//     open: false,
-//     port: 9000,
-//     server: {
-//       baseDir: ['.'],
-//       middleware: function (req, res, next) {
-//         res.setHeader('Access-Control-Allow-Origin', '*');
-//         next();
-//       }
-//     }
-//   }, done);
-// });
-
 gulp.task('serve', ['build', 'nodemon']);
 
 
 function reportChange(event){
   console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
+  livereload();
 }
 
 gulp.task('watch', ['serve'], function() {
-  gulp.watch(path.source, ['build-system', browserSync.reload]).on('change', reportChange);
-  gulp.watch(path.html, ['build-html', browserSync.reload]).on('change', reportChange);
-  gulp.watch(path.style, browserSync.reload).on('change', reportChange);
+  livereload.listen();
+  gulp.watch(path.source, ['build-system', livereload]).on('change', reportChange);
+  gulp.watch(path.html, ['build-html', livereload]).on('change', reportChange);
+  gulp.watch(path.style, livereload).on('change', reportChange);
 });
 
 gulp.task('prepare-release', function(callback){
