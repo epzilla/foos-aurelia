@@ -10,6 +10,8 @@ var to5 = require('gulp-6to5');
 var jshint = require('gulp-jshint');
 var stylish = require('jshint-stylish');
 var jade = require('gulp-jade');
+var stylus = require('gulp-stylus');
+var autoprefixer = require('gulp-autoprefixer');
 var yuidoc = require('gulp-yuidoc');
 var changelog = require('conventional-changelog');
 var assign = Object.assign || require('object.assign');
@@ -28,7 +30,8 @@ var path = {
   source:'src/**/*.js',
   html:'src/**/*.html',
   jade: 'src/**/*.jade',
-  style:'styles/**/*.css',
+  stylus: 'src/styles/**/*.styl',
+  styles:'styles',
   img: 'src/img/**',
   imgOutput: 'dist/img',
   output:'dist/',
@@ -85,6 +88,19 @@ gulp.task('jade', function () {
     .pipe(changed(path.output))
     .pipe(jade({ pretty : true }))
     .pipe(gulp.dest(path.output))
+    .pipe(livereload());
+});
+
+// Compile changed Stylus files to CSS and copy to dev_server
+gulp.task('stylus', function () {
+  return gulp.src(path.stylus)
+    .pipe(changed(path.styles))
+    .pipe(stylus())
+    .pipe(autoprefixer({
+      browsers: ['last 2 versions'],
+      cascade: false
+    }))
+    .pipe(gulp.dest(path.styles))
     .pipe(livereload());
 });
 
@@ -188,11 +204,13 @@ function reportChange(event){
 
 gulp.task('watch', ['serve'], function() {
   livereload.listen();
-  gulp.watch(path.source, ['build-system', livereload]).on('change', reportChange);
-  gulp.watch(path.jade, ['jade', livereload]).on('change', reportChange);
-  gulp.watch(path.html, ['build-html', livereload]).on('change', reportChange);
-  gulp.watch(path.style, livereload).on('change', reportChange);
+  gulp.watch(path.source, ['build-system']).on('change', reportChange);
+  gulp.watch(path.jade, ['jade']).on('change', reportChange);
+  gulp.watch(path.html, ['build-html']).on('change', reportChange);
+  gulp.watch(path.stylus, ['stylus']).on('change', reportChange);
 });
+
+gulp.task('default', ['watch']);
 
 gulp.task('prepare-release', function(callback){
   return runSequence(
