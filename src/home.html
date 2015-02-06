@@ -67,20 +67,52 @@
           </div>
         </div>
       
-        <div class="row">
-          <h3>Game ${currentMatch.gameNum} In Progress</h3>
+        <div class="row tall stepper heads-stepper" show.bind="startedMatch()">
+          <div class="col-xs-4 minus no-pad">
+            <button class="btn btn-expand" onclick="alert('Heads--')">
+              <i class="fa fa-minus"></i>
+            </button>
+          </div>
+          <div class="col-xs-4">
+            <h3>Heads</h3>
+          </div>
+          <div class="col-xs-4 plus no-pad">
+            <button class="btn btn-expand" onclick="alert('Heads++')">
+              <i class="fa fa-plus"></i>
+            </button>
+          </div>
         </div>
 
-        <div class="row">
-          <div class="col-xs-12">
-            <h5><em>Game 3 started at ${moment(currentMatch.gameStartTime).format('h:mma')}</em></h5>
-            <h5><em>Match started at ${moment(currentMatch.startTime).format('h:mma')}</em></h5>
+        <div class="row tall stepper tails-stepper" show.bind="startedMatch()">
+          <div class="col-xs-4 minus no-pad">
+            <button class="btn btn-expand" onclick="alert('Tails--')">
+              <i class="fa fa-minus"></i>
+            </button>
+          </div>
+          <div class="col-xs-4">
+            <h3>Tails</h3>
+          </div>
+          <div class="col-xs-4 plus no-pad">
+            <button class="btn btn-expand" onclick="alert('Tails++')">
+              <i class="fa fa-plus"></i>
+            </button>
           </div>
         </div>
 
         <div class="row" show.bind="startedMatch()">
           <div class="col-xs-12">
-            <button class="btn btn-danger">End Game</button>
+            <button class="btn btn-danger btn-lg">End Game</button>
+          </div>
+        </div>
+
+        <div class="row" show.bind="!startedMatch()">
+          <h3>Game ${currentMatch.gameNum} In Progress</h3>
+        </div>
+
+        <div class="row" show.bind="!startedMatch()">
+          <div class="col-xs-12">
+            <h5><em>Game 3 started at ${moment(currentMatch.gameStartTime).format('h:mma')}</em></h5>
+            <h5><em>Match started at ${moment(currentMatch.startTime).format('h:mma')}</em></h5>
           </div>
         </div>
 

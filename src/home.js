@@ -17,7 +17,25 @@ export class Home {
   }
 
   activate () {
-    this.http.get(this.url + 'matches/current').then(response => {
+    this.socket.on('connect', () => {
+      console.info('Socket connected');
+    });
+
+    this.socket.on('disconnect', () => {
+      console.error('Socket disconnected');
+    });
+
+    this.socket.on('matchUpdate', (data) => {
+      console.log(data);
+      if (data.status === 'finished') {
+        this.currentMatch = {scores: []};
+        this.matchInProgress = false;
+      } else {
+        this.currentMatch = data;
+      }
+    });
+
+    return this.http.get(this.url + 'matches/current').then(response => {
       if ((response.content.length > 0) && response.content[0].active) {
         this.matchInProgress = true;
         this.currentMatch = response.content[0];
@@ -40,24 +58,6 @@ export class Home {
         }
       } else {
         this.matchInProgress = false;
-      }
-    });
-
-    this.socket.on('connect', () => {
-      console.info('Socket connected');
-    });
-
-    this.socket.on('disconnect', () => {
-      console.error('Socket disconnected');
-    });
-
-    this.socket.on('matchUpdate', (data) => {
-      console.log(data);
-      if (data.status === 'finished') {
-        this.currentMatch = {scores: []};
-        this.matchInProgress = false;
-      } else {
-        this.currentMatch = data;
       }
     });
   }
