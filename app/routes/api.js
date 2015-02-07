@@ -5,9 +5,7 @@ var router = require('express').Router();
 var players = require('./services/players');
 var matches = require('./services/matches');
 
-var self = this;
 var init = function(socket) {
-  self.io = socket;
   players.init(socket);
   matches.init(socket);
 };
@@ -33,7 +31,8 @@ router.get('/matches', matches.findAll);
 router.get('/matches/current', matches.getCurrentMatch);
 router.get('/matches/:matchId', matches.find);
 router.put('/matches/:matchId', matches.update);
-router.put('/matches/finish/:matchId', matches.finishGame);
+router.put('/matches/changeScore', matches.changeScore);
+router.put('/matches/end/:matchId', matches.endMatch);
 
 module.exports = {
   router: router,

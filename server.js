@@ -27,28 +27,20 @@ if (conf.ENVIRONMENT === 'dev') {
 }
 
 var port = process.env.PORT || conf.PORT || 3000;
-var socket_port = conf.SOCKET_PORT || 9000;
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/foos');
 
+// SET UP SOCKETS =========================================
+var socket_port = conf.SOCKET_PORT || 9000;
 server.listen(socket_port, function() {
   console.info('server listening on port ' + socket_port);
 });
 
-var socket = require('socket.io').listen(server);
-socket.on('connection', function(){
-  console.info('connected SocketIO');
-  routes.init(socket);
-  socket.emit('test', {testData: 'got it?'});
-  socket.on('asdf', function (data) {
-    console.log(data);
-  });
-});
+var io = require('socket.io').listen(server);
+routes.init(io);
 
-// REGISTER OUR ROUTES -------------------------------
-routes.init(socket);
-
+// REGISTER ROUTES ========================================
 app.use('/api', routes.router);
 app.set('port', port);
 
@@ -58,6 +50,6 @@ app.get('/', function (req, res) {
 });
 
 // START THE SERVER
-// =============================================================================
+// ========================================================
 app.listen(port);
 console.log('Magic happens on port ' + port);

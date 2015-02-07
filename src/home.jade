@@ -41,27 +41,29 @@ template
                 h2 0
         .row.tall.stepper.heads-stepper(show.bind="startedMatch()")
           .col-xs-4.minus.no-pad
-            button.btn.btn-expand(onclick="alert('Heads--')")
+            button.btn.btn-expand(click.trigger="changeScore('heads','minus')")
               i.fa.fa-minus
           .col-xs-4
             h3 Heads
           .col-xs-4.plus.no-pad
-            button.btn.btn-expand(onclick="alert('Heads++')")
+            button.btn.btn-expand(click.trigger="changeScore('heads','plus')")
               i.fa.fa-plus
         .row.tall.stepper.tails-stepper(show.bind="startedMatch()")
           .col-xs-4.minus.no-pad
-            button.btn.btn-expand(onclick="alert('Tails--')")
+            button.btn.btn-expand(click.trigger="changeScore('tails','minus')")
               i.fa.fa-minus
           .col-xs-4
             h3 Tails
           .col-xs-4.plus.no-pad
-            button.btn.btn-expand(onclick="alert('Tails++')")
+            button.btn.btn-expand(click.trigger="changeScore('tails','plus')")
               i.fa.fa-plus
         .row(show.bind="startedMatch()")
           .col-xs-12
-            button.btn.btn-danger.btn-lg End Game
+            button(click.trigger='endMatch()').btn.btn-danger.btn-lg End Match
+        
         .row(show.bind="!startedMatch()")
           h3 Game ${currentMatch.gameNum} In Progress
+
         .row(show.bind="!startedMatch()")
           .col-xs-12
             h5

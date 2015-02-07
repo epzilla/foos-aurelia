@@ -22,16 +22,32 @@ export class Home {
     });
 
     this.socket.on('disconnect', () => {
-      console.error('Socket disconnected');
+      console.warn('Socket disconnected');
     });
 
     this.socket.on('matchUpdate', (data) => {
-      console.log(data);
       if (data.status === 'finished') {
         this.currentMatch = {scores: []};
         this.matchInProgress = false;
       } else {
-        this.currentMatch = data;
+        this.currentMatch = data.updatedMatch;
+        if (data.updatedMatch.active) {
+          this.matchInProgress = true;
+        }
+        if (data.status === 'new') {
+          this.setUp();
+        }
+      }
+    });
+
+    this.socket.on('matchError', (data) => {
+      console.log(data);
+      if (data.status === 'matchUpdateFailed') {
+        let gameIndex = this.currentMatch.gameNum - 1;
+        let team = data.team;
+        let score = data.rollbackScore;
+        this.currentMatch.scores[gameIndex][team] = score;
+        this.matchInProgress = false;
       }
     });
 
@@ -39,31 +55,39 @@ export class Home {
       if ((response.content.length > 0) && response.content[0].active) {
         this.matchInProgress = true;
         this.currentMatch = response.content[0];
-        var heads1 = this.currentMatch.heads[0].name.split(' ');
-        var heads2 = this.currentMatch.heads[1].name.split(' ');
-        var tails1 = this.currentMatch.tails[0].name.split(' ');
-        var tails2 = this.currentMatch.tails[1].name.split(' ');
-        this.headsTitle = heads1[heads1.length - 1] + ' / ' + heads2[heads2.length - 1];
-        this.tailsTitle = tails1[tails1.length - 1] + ' / ' + tails2[tails2.length - 1];
-        var currentHeads = this.currentMatch.scores[this.currentMatch.gameNum - 1];
-        var currentTails = this.currentMatch.scores[this.currentMatch.gameNum - 1];
-        this.headsClass = '';
-        this.tailsClass = '';
-        if (currentHeads > currentTails) {
-          this.headsClass = 'winning-score';
-          this.tailsClass = 'losing-score';
-        } else if (currentTails > currentHeads) {
-          this.headsClass = 'losing-score';
-          this.tailsClass = 'winning-score';
-        }
+        this.setUp();
       } else {
         this.matchInProgress = false;
       }
     });
   }
 
+  setUp () {
+    var heads1 = this.currentMatch.heads[0].name.split(' ');
+    var heads2 = this.currentMatch.heads[1].name.split(' ');
+    var tails1 = this.currentMatch.tails[0].name.split(' ');
+    var tails2 = this.currentMatch.tails[1].name.split(' ');
+    this.headsTitle = heads1[heads1.length - 1] + ' / ' + heads2[heads2.length - 1];
+    this.tailsTitle = tails1[tails1.length - 1] + ' / ' + tails2[tails2.length - 1];
+    var currentHeads = this.currentMatch.scores[this.currentMatch.gameNum - 1];
+    var currentTails = this.currentMatch.scores[this.currentMatch.gameNum - 1];
+    this.headsClass = '';
+    this.tailsClass = '';
+    if (currentHeads > currentTails) {
+      this.headsClass = 'winning-score';
+      this.tailsClass = 'losing-score';
+    } else if (currentTails > currentHeads) {
+      this.headsClass = 'losing-score';
+      this.tailsClass = 'winning-score';
+    }
+  }
+
   startNewMatch () {
     alert('New match!');
+  }
+
+  endMatch () {
+    alert('Ending match!');
   }
 
   getHeadsClass () {
@@ -72,6 +96,21 @@ export class Home {
 
   getTailsClass () {
     return 'losing-score';
+  }
+
+  changeScore (team, plusMinus) {
+    if (plusMinus === 'plus') {
+      this.currentMatch.scores[this.currentMatch.gameNum - 1][team]++;
+    } else {
+      this.currentMatch.scores[this.currentMatch.gameNum - 1][team]--;
+    }
+
+    let payload = {
+      team: team,
+      plusMinus: plusMinus,
+      id: this.currentMatch._id
+    };
+    this.socket.emit('scoreChange', payload);
   }
 
   startedMatch () {
