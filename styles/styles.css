@@ -215,3 +215,27 @@ h3,
 .no-pad-xs {
   padding: 0;
 }
+.score-flash {
+  background-color: #c53308;
+}
+.score-flash h2 {
+  color: #fff;
+  -webkit-animation: flash 1s linear infinite;
+  animation: flash 1s linear infinite;
+}
+@-webkit-keyframes flash {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.5;
+  }
+}
+@keyframes flash {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.5;
+  }
+}

@@ -31,11 +31,15 @@ export class Home {
         this.matchInProgress = false;
       } else {
         this.currentMatch = data.updatedMatch;
+        
         if (data.updatedMatch.active) {
           this.matchInProgress = true;
         }
+
         if (data.status === 'new') {
           this.setUp();
+        } else if (data.status === 'ok') {
+          this.addFlair(data.whatChanged);
         }
       }
     });
@@ -111,6 +115,21 @@ export class Home {
       id: this.currentMatch._id
     };
     this.socket.emit('scoreChange', payload);
+  }
+
+  addFlair (change) {
+    console.dir(change);
+    // if (change.gameOver) {
+    //   // Do winning team flair
+    //   console.log(change);
+    // } else {
+    //   // Do goal scored flair
+    //   var score = $('.' + change.team + '-scores .score').last();
+    //   score.addClass('score-flash');
+    //   window.setTimeout( () => {
+    //     score.removeClass('score-flash');
+    //   }, 5000);
+    // }
   }
 
   startedMatch () {

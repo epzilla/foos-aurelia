@@ -165,6 +165,7 @@ MatchService.changeScore = function (sock, data) {
 
     var team = [data.team];
     var rollbackScore = match.scores[match.gameNum - 1][team];
+    var gameOver = false;
 
     // Increment or decrement the specified team's score
     if (data.plusMinus === 'plus') {
@@ -175,6 +176,7 @@ MatchService.changeScore = function (sock, data) {
 
     // If it's the last game, end it; otherwise, move to the next game
     if (match.scores[match.gameNum - 1][team] === 10) {
+      gameOver = true;
       if (match.gameNum === 3) {
         match.active = false;
       } else {
@@ -201,11 +203,21 @@ MatchService.changeScore = function (sock, data) {
 
       // Otherwise, broadcast the update
       if (!updatedMatch.active) {
-        MatchService.io.emit('matchUpdate', {status: 'finished'});
+        // Match is over
+        MatchService.io.emit('matchUpdate', {
+          status: 'finished',
+          winner: team
+        });
       } else {
+        // Match continues
         MatchService.io.emit('matchUpdate', {
           status: 'ok',
-          updatedMatch: updatedMatch
+          updatedMatch: updatedMatch,
+          whatChanged: {
+            team: team[0],
+            plusMinus: data.plusMinus,
+            gameOver: gameOver
+          }
         });
       }
     });

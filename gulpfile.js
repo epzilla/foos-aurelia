@@ -194,7 +194,7 @@ gulp.task('build-dev-env', function () {
   tools.buildDevEnv();
 });
 
-gulp.task('serve', ['build', 'jade', 'nodemon']);
+gulp.task('serve', ['build', 'jade', 'stylus','nodemon']);
 
 
 function reportChange(event){
