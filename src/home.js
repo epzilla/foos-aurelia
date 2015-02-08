@@ -34,8 +34,8 @@ export class Home {
         
         if (data.updatedMatch.active) {
           this.matchInProgress = true;
-          this.currentHeads = this.currentMatch.scores[this.currentMatch.gameNum - 1].heads;
-          this.currentTails = this.currentMatch.scores[this.currentMatch.gameNum - 1].tails;
+          this.currentTeam1 = this.currentMatch.scores[this.currentMatch.gameNum - 1].team1;
+          this.currentTeam2 = this.currentMatch.scores[this.currentMatch.gameNum - 1].team2;
         }
 
         if (data.status === 'new') {
@@ -70,22 +70,22 @@ export class Home {
   }
 
   setUp () {
-    this.headsTitle = this.currentMatch.heads.title;
-    this.tailsTitle = this.currentMatch.tails.title;
-    this.currentHeads = this.currentMatch.scores[this.currentMatch.gameNum - 1].heads;
-    this.currentTails = this.currentMatch.scores[this.currentMatch.gameNum - 1].tails;
-    this.headsClass = '';
-    this.tailsClass = '';
+    this.team1Title = this.currentMatch.team1.title;
+    this.team2Title = this.currentMatch.team2.title;
+    this.currentTeam1 = this.currentMatch.scores[this.currentMatch.gameNum - 1].team1;
+    this.currentTeam2 = this.currentMatch.scores[this.currentMatch.gameNum - 1].team2;
+    this.team1Class = '';
+    this.team2Class = '';
     this.setClasses();
   }
 
   setClasses () {
-    if (this.currentHeads > this.currentTails) {
-      this.headsClass = 'winning-score';
-      this.tailsClass = 'losing-score';
-    } else if (this.currentTails > this.currentHeads) {
-      this.headsClass = 'losing-score';
-      this.tailsClass = 'winning-score';
+    if (this.currentTeam1 > this.currentTeam2) {
+      this.team1Class = 'winning-score';
+      this.team2Class = 'losing-score';
+    } else if (this.currentTeam2 > this.currentTeam1) {
+      this.team1Class = 'losing-score';
+      this.team2Class = 'winning-score';
     }
   }
 
@@ -97,11 +97,11 @@ export class Home {
     alert('Ending match!');
   }
 
-  getHeadsClass () {
+  getTeam1Class () {
     return 'winning-score';
   }
 
-  getTailsClass () {
+  getTeam2Class () {
     return 'losing-score';
   }
 

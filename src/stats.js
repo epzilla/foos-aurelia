@@ -19,12 +19,12 @@ export class Home {
       if ((response.content.length > 0) && response.content[0].active) {
         this.matchInProgress = true;
         this.currentMatch = response.content[0];
-        var heads1 = this.currentMatch.heads[0].name.split(' ');
-        var heads2 = this.currentMatch.heads[1].name.split(' ');
-        var tails1 = this.currentMatch.tails[0].name.split(' ');
-        var tails2 = this.currentMatch.tails[1].name.split(' ');
-        this.headsTitle = heads1[heads1.length - 1] + ' / ' + heads2[heads2.length - 1];
-        this.tailsTitle = tails1[tails1.length - 1] + ' / ' + tails2[tails2.length - 1];
+        var team1player1 = this.currentMatch.team1[0].name.split(' ');
+        var team1player2 = this.currentMatch.team1[1].name.split(' ');
+        var team2player1 = this.currentMatch.tails[0].name.split(' ');
+        var team2player2 = this.currentMatch.tails[1].name.split(' ');
+        this.team1Title = team1player1[team1player1.length - 1] + ' / ' + team1player2[team1player2.length - 1];
+        this.tailsTitle = team2player1[team2player1.length - 1] + ' / ' + team2player2[team2player2.length - 1];
       } else {
         this.matchInProgress = false;
       }

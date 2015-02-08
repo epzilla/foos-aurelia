@@ -21,18 +21,18 @@ export class NewMatch {
   activate () {
     return this.http.get(this.playersURL).then(response => {
       this.players = response.content;
-      this.headsPlayer1 = this.players[0];
-      this.headsPlayer2 = this.players[1];
-      this.tailsPlayer1 = this.players[2];
-      this.tailsPlayer2 = this.players[3];
+      this.team1Player1 = this.players[0];
+      this.team1Player2 = this.players[1];
+      this.team2Player1 = this.players[2];
+      this.team2Player2 = this.players[3];
     });
   }
 
   startNewGame () {
     this.isWorking = true;
     var payload = {
-      heads: [this.headsPlayer1._id, this.headsPlayer2._id],
-      tails: [this.tailsPlayer1._id, this.tailsPlayer2._id]
+      team1: [this.team1Player1._id, this.team1Player2._id],
+      team2: [this.team2Player1._id, this.team2Player2._id]
     };
     return this.http.post(this.matchesURL, payload).then( (res) => {
       /* Set localStorage item "matchID" to a mash-up of the newly created match ID and

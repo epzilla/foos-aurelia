@@ -103,7 +103,6 @@ module.exports = {
         
         if (team && team.length > 0) {
           // Found a team
-          console.dir(team);
           cb(null, team[0]);
         } else {
           // Need to create a team

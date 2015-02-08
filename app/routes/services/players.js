@@ -55,7 +55,6 @@ module.exports = {
       for (var prop in newVals) {
         if (newVals.hasOwnProperty(prop)) {
           if (player[prop] !== undefined) {
-            console.log('**** Found prop: ' + prop + ' *****');
             player[prop] = newVals[prop];
           }
         }

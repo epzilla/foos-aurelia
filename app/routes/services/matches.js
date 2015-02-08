@@ -10,37 +10,38 @@ var MatchService = {};
 
 MatchService.init = function (sock) {
   MatchService.io = sock;
+  
   MatchService.io.on('connection', function (socket) {
-    console.log('connected to matchService');
+    var socketId = socket.id;
+    var clientIp = socket.request.connection.remoteAddress;
+    var clientPort = socket.request.connection.remotePort;
+
+    console.info('Socket connection from : ' + clientIp + ':' +  clientPort + '\n' +
+                 '                    ID : ' + socketId);
+
     socket.on('scoreChange', function (data) {
       MatchService.changeScore(socket, data);
     });
-
-    socket.on('asdf', function (data) {
-      console.log(data);
-    });
-
   });
 };
 
 MatchService.create = function (req, res) {
   var now = moment();
   
-  TeamService.getOrCreate(req.body.heads, function (err, headsTeam) {
+  TeamService.getOrCreate(req.body.team1, function (err, team1) {
     if (err) {
       res.status(400).send(err);
     }
-    console.dir(headsTeam);
-    TeamService.getOrCreate(req.body.tails, function (err, tailsTeam) {
+
+    TeamService.getOrCreate(req.body.team2, function (err, team2) {
       if (err) {
         res.status(400).send(err);
       }
 
-      console.dir(tailsTeam);
       var match = new Match({
-        heads: headsTeam._id,
-        tails: tailsTeam._id,
-        scores: [{ heads: 0, tails: 0}],
+        team1: team1._id,
+        team2: team2._id,
+        scores: [{ team1: 0, team2: 0}],
         startTime: now,
         endTime: null,
         gameStartTime: now,
@@ -58,9 +59,9 @@ MatchService.create = function (req, res) {
             res.send(err);
           }
 
-          match.heads = headsTeam;
-          match.tails = tailsTeam;
-          console.dir(match);
+          match.team1 = team1;
+          match.team2 = team2;
+
           MatchService.io.emit('matchUpdate', {
             status: 'new',
             updatedMatch: match
@@ -75,7 +76,7 @@ MatchService.create = function (req, res) {
 
 MatchService.findAll = function (req, res) {
   Match.find()
-    .populate('heads tails')
+    .populate('team1 team2')
     .exec(function (err, matches) {
       if (err) {
         res.send(err);
@@ -86,7 +87,7 @@ MatchService.findAll = function (req, res) {
 
 MatchService.find = function (req, res) {
   Match.findById(req.params.matchId)
-    .populate('heads tails')
+    .populate('team1 team2')
     .exec(function (err, match) {
       if (err) {
         res.send(err);
@@ -121,7 +122,7 @@ MatchService.update = function (req, res) {
 
 MatchService.getCurrentMatch = function (req, res) {
   Match.find({ active: true})
-    .populate('heads tails')
+    .populate('team1 team2')
     .exec(function (err, match) {
       if (err) {
         res.send(err);
@@ -131,7 +132,7 @@ MatchService.getCurrentMatch = function (req, res) {
 };
 
 MatchService.endMatch = function (sock, match) {
-  var newScore = match.score || {heads: 0, tails: 0};
+  var newScore = match.score || {team1: 0, team2: 0};
   var gameNum = match.gameNum || 3;
   var matchOver = gameNum === 3;
 
@@ -200,8 +201,8 @@ MatchService.changeScore = function (sock, data) {
       } else {
         match.gameNum++;
         match.scores.push({
-          heads: 0,
-          tails: 0
+          team1: 0,
+          team2: 0
         });
       }
     }

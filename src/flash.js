@@ -7,7 +7,7 @@ export class FlashAttachedBehavior {
   }
 
   valueChanged (newValue, oldValue) {
-    if (oldValue) {
+    if (oldValue || oldValue === 0) {
       if (newValue === 10) {
         window.setTimeout( () => {
           let scores = this.element.querySelectorAll('.score');

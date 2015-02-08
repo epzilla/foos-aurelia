@@ -2,11 +2,11 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var MatchSchema = new Schema({
-  heads: { type: Schema.Types.ObjectId, ref: 'Team'},
-  tails: { type: Schema.Types.ObjectId, ref: 'Team'},
+  team1: { type: Schema.Types.ObjectId, ref: 'Team'},
+  team2: { type: Schema.Types.ObjectId, ref: 'Team'},
   scores: [{
-    heads: Number,
-    tails: Number
+    team1: Number,
+    team2: Number
   }],
   startTime: Date,
   gameStartTime: Date,
