@@ -2,6 +2,8 @@
 'use strict';
 
 var Match = require('../../models/match');
+var TeamService = require('./teams');
+var PlayerService = require('./players');
 var moment = require('moment');
 
 var MatchService = {};
@@ -23,33 +25,49 @@ MatchService.init = function (sock) {
 
 MatchService.create = function (req, res) {
   var now = moment();
-  var match = new Match({
-    heads: req.body.heads,
-    tails: req.body.tails,
-    scores: [{ heads: 0, tails: 0}],
-    startTime: now,
-    endTime: null,
-    gameStartTime: now,
-    gameNum: 1,
-    active: true
-  });
-
-  match.save(function (err, newMatch) {
+  
+  TeamService.getOrCreate(req.body.heads, function (err, headsTeam) {
     if (err) {
-      res.send(err);
+      res.status(400).send(err);
     }
+    console.dir(headsTeam);
+    TeamService.getOrCreate(req.body.tails, function (err, tailsTeam) {
+      if (err) {
+        res.status(400).send(err);
+      }
 
-    Match.findById(newMatch._id)
-      .populate('heads tails')
-      .exec(function (err, match) {
+      console.dir(tailsTeam);
+      var match = new Match({
+        heads: headsTeam._id,
+        tails: tailsTeam._id,
+        scores: [{ heads: 0, tails: 0}],
+        startTime: now,
+        endTime: null,
+        gameStartTime: now,
+        gameNum: 1,
+        active: true
+      });
+
+      match.save(function (err, newMatch) {
         if (err) {
           res.send(err);
         }
-        MatchService.io.emit('matchUpdate', {
-          status: 'new',
-          updatedMatch: match
+
+        Match.findById(newMatch._id, function (err, match) {
+          if (err) {
+            res.send(err);
+          }
+
+          match.heads = headsTeam;
+          match.tails = tailsTeam;
+          console.dir(match);
+          MatchService.io.emit('matchUpdate', {
+            status: 'new',
+            updatedMatch: match
+          });
+          res.json(match);
         });
-        res.json(match);
+      });
     });
   });
 };
@@ -204,10 +222,15 @@ MatchService.changeScore = function (sock, data) {
       // Otherwise, broadcast the update
       if (!updatedMatch.active) {
         // Match is over
-        MatchService.io.emit('matchUpdate', {
-          status: 'finished',
-          winner: team
+        TeamService.updateTeamStats(updatedMatch, function () {
+          PlayerService.updatePlayerStats(updatedMatch, function () {
+            MatchService.io.emit('matchUpdate', {
+              status: 'finished',
+              winner: team
+            });
+          });
         });
+
       } else {
         // Match continues
         MatchService.io.emit('matchUpdate', {

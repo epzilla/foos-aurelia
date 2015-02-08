@@ -34,13 +34,16 @@ export class Home {
         
         if (data.updatedMatch.active) {
           this.matchInProgress = true;
+          this.currentHeads = this.currentMatch.scores[this.currentMatch.gameNum - 1].heads;
+          this.currentTails = this.currentMatch.scores[this.currentMatch.gameNum - 1].tails;
         }
 
         if (data.status === 'new') {
           this.setUp();
-        } else if (data.status === 'ok') {
-          this.addFlair(data.whatChanged);
         }
+        // } else if (data.status === 'ok') {
+        //   this.addFlair(data.whatChanged);
+        // }
       }
     });
 
@@ -67,20 +70,20 @@ export class Home {
   }
 
   setUp () {
-    var heads1 = this.currentMatch.heads[0].name.split(' ');
-    var heads2 = this.currentMatch.heads[1].name.split(' ');
-    var tails1 = this.currentMatch.tails[0].name.split(' ');
-    var tails2 = this.currentMatch.tails[1].name.split(' ');
-    this.headsTitle = heads1[heads1.length - 1] + ' / ' + heads2[heads2.length - 1];
-    this.tailsTitle = tails1[tails1.length - 1] + ' / ' + tails2[tails2.length - 1];
-    var currentHeads = this.currentMatch.scores[this.currentMatch.gameNum - 1];
-    var currentTails = this.currentMatch.scores[this.currentMatch.gameNum - 1];
+    this.headsTitle = this.currentMatch.heads.title;
+    this.tailsTitle = this.currentMatch.tails.title;
+    this.currentHeads = this.currentMatch.scores[this.currentMatch.gameNum - 1].heads;
+    this.currentTails = this.currentMatch.scores[this.currentMatch.gameNum - 1].tails;
     this.headsClass = '';
     this.tailsClass = '';
-    if (currentHeads > currentTails) {
+    this.setClasses();
+  }
+
+  setClasses () {
+    if (this.currentHeads > this.currentTails) {
       this.headsClass = 'winning-score';
       this.tailsClass = 'losing-score';
-    } else if (currentTails > currentHeads) {
+    } else if (this.currentTails > this.currentHeads) {
       this.headsClass = 'losing-score';
       this.tailsClass = 'winning-score';
     }
@@ -117,20 +120,20 @@ export class Home {
     this.socket.emit('scoreChange', payload);
   }
 
-  addFlair (change) {
-    console.dir(change);
-    // if (change.gameOver) {
-    //   // Do winning team flair
-    //   console.log(change);
-    // } else {
-    //   // Do goal scored flair
-    //   var score = $('.' + change.team + '-scores .score').last();
-    //   score.addClass('score-flash');
-    //   window.setTimeout( () => {
-    //     score.removeClass('score-flash');
-    //   }, 5000);
-    // }
-  }
+  // addFlair (change) {
+  //   console.dir(change);
+  //   if (change.gameOver) {
+  //     // Do winning team flair
+  //     console.log(change);
+  //   } else {
+  //     // Do goal scored flair
+  //     var score = $('.' + change.team + '-scores .score').last();
+  //     score.addClass('score-flash');
+  //     window.setTimeout( () => {
+  //       score.removeClass('score-flash');
+  //     }, 5000);
+  //   }
+  // }
 
   startedMatch () {
     if (this.currentMatch._id) {

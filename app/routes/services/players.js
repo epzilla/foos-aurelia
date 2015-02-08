@@ -2,13 +2,8 @@
 'use strict';
 
 var Player = require('../../models/player');
-var self = this;
 
 module.exports = {
-
-  init: function(socket) {
-    self.io = socket;
-  },
 
   create: function (req, res) {
     var player = new Player({
@@ -73,5 +68,9 @@ module.exports = {
         res.json({ message: 'Player updated!' });
       });
     });
+  },
+
+  updatePlayerStats: function (match, cb) {
+    cb();
   }
 };

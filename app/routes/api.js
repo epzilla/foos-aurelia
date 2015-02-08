@@ -6,7 +6,6 @@ var players = require('./services/players');
 var matches = require('./services/matches');
 
 var init = function(socket) {
-  players.init(socket);
   matches.init(socket);
 };
 

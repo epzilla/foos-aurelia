@@ -21,7 +21,7 @@ template
           .col-sm-10.col-sm-offset-1
             .col-xs-5.col-xs-offset-1.heads
               h2 ${headsTitle}
-            .col-xs-6.heads-scores(flash.bind='currentMatch.scores[currentMatch.scores.length - 1].heads')
+            .col-xs-6.heads-scores(flash.bind='currentHeads')
               .col-xs-4.no-pad-xs.text-center.score(class='${headsClass}' repeat.for='score of currentMatch.scores')
                 h2 ${score.heads}
               .col-xs-4.no-pad-xs.text-center(if.bind="currentMatch.scores.length < 3")
@@ -32,7 +32,7 @@ template
           .col-sm-10.col-sm-offset-1
             .col-xs-5.col-xs-offset-1.tails
               h2 ${tailsTitle}
-            .col-xs-6.tails-scores(flash.bind='currentMatch.scores[currentMatch.scores.length - 1].tails')
+            .col-xs-6.tails-scores(flash.bind='currentTails')
               .col-xs-4.no-pad-xs.text-center.score(class='${tailsClass}' repeat.for='score of currentMatch.scores')
                 h2 ${score.tails}
               .col-xs-4.no-pad-xs.text-center(if.bind="currentMatch.scores.length < 3")

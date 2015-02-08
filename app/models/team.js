@@ -1,0 +1,18 @@
+var mongoose     = require('mongoose');
+var Schema       = mongoose.Schema;
+
+var TeamSchema = new Schema({
+  title: String,
+  players: [{ type: Schema.Types.ObjectId, ref: 'Player'}],
+  matches: Number,
+  games: Number,
+  matchesWon: Number,
+  matchesLost: Number,
+  gamesWon: Number,
+  gamesLost: Number,
+  pct: Number,
+  ptsFor: Number,
+  ptsAgainst: Number
+});
+
+module.exports = mongoose.model('Team', TeamSchema);
