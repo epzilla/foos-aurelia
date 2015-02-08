@@ -219,4 +219,61 @@ h3, .h3
 
 
 
+// Radio button hack
+input[type=radio]
+  position absolute
+  top -9999px
+  left -9999px
+
+label[for="by-player"]
+  cursor pointer
+  text-align center
+  font-family sans-serif
+  font-size 14px
+  font-weight 300
+  color #aaa
+  line-height 40px
+  height 40px
+  min-width 100px
+  float left
+
+label[for="by-team"]
+  cursor pointer
+  text-align center
+  font-family sans-serif
+  font-size 14px
+  font-weight 300
+  color #aaa
+  line-height 40px
+  height 40px
+  min-width 100px
+  float left
+
+input#by-player[type=radio]:checked
+  & ~ label[for="by-player"]
+    border-bottom 5px solid synapseBlue
+    font-weight bold
+    color lighten(black, 20%)
+
+input#by-team[type=radio]:checked
+  & ~ label[for="by-team"]
+    border-bottom 5px solid synapseBlue
+    font-weight bold
+    color lighten(black, 20%)
+
+.flex-container
+  display flex
+  justify-content center
+  align-items center
+  
+.flex-item
+  display flex
+
+.width-200
+  width 200px
+
+.table.text-center
+  th
+    text-align center
+
 

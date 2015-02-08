@@ -1,4 +1,84 @@
 template
-  section.row
-    section.col-md-12
-      h1 Stats &#38; History
+  section.container.text-center
+    section.row
+      section.col-md-12
+        h1 Stats &#38; History
+    section.row
+      section.flex-container.col-md-12
+        section.flex-item.width-200
+          input#by-player(type="radio", name="toggle", value="1", change.trigger='toggleTeam(false)', checked="checked")
+          label(for="by-player") By Player
+          input#by-team(type="radio", name="toggle", change.trigger='toggleTeam(true)', value="2")
+          label(for="by-team") By Team
+
+    section.row(show.bind='!byTeam')
+      section.col-md-12
+        table.table.table-hover.table-responsive.table-striped.text-center.table-bordered
+          thead
+            tr
+              th Player
+              th Record
+              th Pct.
+              th Avg. Score
+          tbody
+            tr
+              td Jon Martin
+              td 8-2
+              td .800
+              td 8.6 - 6.5
+            tr
+              td Eric Ibarra
+              td 7-3
+              td .700
+              td 8.3 - 6.8
+            tr
+              td Jeremy Zoller
+              td 8-4
+              td .667
+              td 8.1 - 7.2
+            tr
+              td Emerson Price
+              td 7-5
+              td .583
+              td 7.9 - 7.4
+            tr
+              td Adam Epling
+              td 6-6
+              td .500
+              td 8.0 - 8.0
+
+    section.row(show.bind='byTeam')
+      section.col-md-12
+        table.table.table-hover.table-responsive.table-striped.text-center.table-bordered
+          thead
+            tr
+              th Team
+              th Record
+              th Pct.
+              th Avg. Score
+          tbody
+            tr
+              td Martin / Ibarra
+              td 4-0
+              td 1.000
+              td 10.0 - 6.5
+            tr
+              td Epling / Price
+              td 3-1
+              td .750
+              td 9.3 - 8.0
+            tr
+              td Zoller / Frazer
+              td 2-2
+              td .500
+              td 9.0 - 9.0
+            tr
+              td Banks / Copley
+              td 2-2
+              td .500
+              td 8.5 - 9.0
+            tr
+              td Price / Chung
+              td 1-3
+              td .250
+              td 7.0 - 9.3

@@ -11,6 +11,7 @@ export class Home {
     this.url = this.options.apiUrl;
     this.http = http;
     this.moment = moment;
+    this.byTeam = false;
   }
 
   activate () {
@@ -28,6 +29,10 @@ export class Home {
         this.matchInProgress = false;
       }
     });
+  }
+
+  toggleTeam (isTeam) {
+    this.byTeam = isTeam;
   }
 
 }
