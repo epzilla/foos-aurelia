@@ -10,7 +10,7 @@ A foosball scoretracker using the [Aurelia](http://aurelia.io) JavaScript MVC fr
 * ~~Implement end-match logic (I think this is essentially already done)~~
 * ~~Push socket updates on score changes (right now only happening on match finish)~~
 * Implement stat keeping logic on game end
-* Create stats schema
+* ~~Create stats schema~~
 * Implement stats & history page
 * Make some sort of animation for when scores change and when games/matches end (Already did most of this, but could use some cleaning up)
 * Figure out solution to the heads/tails dilemma
