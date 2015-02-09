@@ -200,6 +200,7 @@ MatchService.changeScore = function (sock, data) {
         match.active = false;
       } else {
         match.gameNum++;
+        match.gameStartTime = moment();
         match.scores.push({
           team1: 0,
           team2: 0

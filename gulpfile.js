@@ -33,7 +33,7 @@ var path = {
   stylus: 'src/styles/**/*.styl',
   styles:'styles',
   img: 'src/img/**',
-  imgOutput: 'dist/img',
+  imgOutput: 'img',
   output:'dist/',
   doc:'./doc',
   e2eSpecsSrc: 'test/e2e/src/*.js',
@@ -194,7 +194,7 @@ gulp.task('build-dev-env', function () {
   tools.buildDevEnv();
 });
 
-gulp.task('serve', ['build', 'jade', 'stylus','nodemon']);
+gulp.task('serve', ['build', 'jade', 'stylus','images', 'nodemon']);
 
 
 function reportChange(event){
