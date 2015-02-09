@@ -2,9 +2,11 @@
 A foosball scoretracker using the [Aurelia](http://aurelia.io) JavaScript MVC framework
 
 ## TODOs (in priority order)
+* Change templates to resolve heads/tails confusion
 * Implement stat keeping logic on game end
 * Implement stats & history page
 * Make some sort of animation for when matches end
+* Set game start time on game changeover
 * (more to come, as I think of them)
 
 ## Installation
