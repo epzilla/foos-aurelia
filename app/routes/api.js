@@ -4,6 +4,7 @@
 var router = require('express').Router();
 var players = require('./services/players');
 var matches = require('./services/matches');
+var teams = require('./services/teams');
 
 var init = function(socket) {
   matches.init(socket);
@@ -32,6 +33,10 @@ router.get('/matches/:matchId', matches.find);
 router.put('/matches/:matchId', matches.update);
 router.put('/matches/changeScore', matches.changeScore);
 router.put('/matches/end/:matchId', matches.endMatch);
+
+// Teams
+router.get('/teams', teams.findAll);
+router.get('/teams/:teamId', teams.find);
 
 module.exports = {
   router: router,

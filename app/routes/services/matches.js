@@ -41,6 +41,7 @@ MatchService.create = function (req, res) {
       var match = new Match({
         team1: team1._id,
         team2: team2._id,
+        winner: null,
         scores: [{ team1: 0, team2: 0}],
         startTime: now,
         endTime: null,
@@ -197,7 +198,44 @@ MatchService.changeScore = function (sock, data) {
     if (match.scores[match.gameNum - 1][team] === 10) {
       gameOver = true;
       if (match.gameNum === 3) {
+        var statPack = {
+          team1: {
+            id: match.team1,
+            gameWins: 0,
+            pts: 0,
+            isWinner: false
+          },
+          team2: {
+            id: match.team1,
+            gameWins: 0,
+            pts: 0,
+            isWinner: false
+          }
+        };
+
         match.active = false;
+        match.endTime = moment();
+        
+        // Loop through each game in the match and collect stats
+        match.scores.forEach(function (score) {
+          if (score.team1 > score.team2) {
+            statPack.team1.gameWins++;
+          } else {
+            statPack.team2.gameWins++;
+          }
+
+          statPack.team1.pts += score.team1;
+          statPack.team2.pts += score.team2;
+        });
+        
+        // Determine the winner
+        if (statPack.team1.gameWins > statPack.team2.gameWins) {
+          match.winner = match.team1;
+          statPack.team1.isWinner = true;
+        } else {
+          match.winner = match.team2;
+          statPack.team2.isWinner = true;
+        }
       } else {
         match.gameNum++;
         match.gameStartTime = moment();
@@ -224,7 +262,7 @@ MatchService.changeScore = function (sock, data) {
       // Otherwise, broadcast the update
       if (!updatedMatch.active) {
         // Match is over
-        TeamService.updateTeamStats(updatedMatch, function () {
+        TeamService.updateTeamStats(updatedMatch, statPack, function (err) {
           PlayerService.updatePlayerStats(updatedMatch, function () {
             MatchService.io.emit('matchUpdate', {
               status: 'finished',
