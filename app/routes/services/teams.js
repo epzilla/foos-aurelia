@@ -31,7 +31,9 @@ var createNewTeam = function (playerIDs, cb) {
       gamesLost: 0,
       pct: 0,
       ptsFor: 0,
-      ptsAgainst: 0
+      ptsAgainst: 0,
+      avgPtsFor: 0,
+      avgPtsAgainst: 0
     });
 
     cb(null, team);
@@ -124,11 +126,6 @@ var updateStatsFromMatch = function (match, teams, cb) {
  */
 var updateUsingStatPack = function (match, teams, statPack, cb) {
   var team1, team2;
-  
-  teams.forEach(function (team) {
-    team.games++;
-    team.matches++;
-  });
 
   console.log('teams[0]._id: ' + teams[0]._id);
   console.log('teams[1]._id: ' + teams[1]._id);
@@ -151,10 +148,14 @@ var updateUsingStatPack = function (match, teams, statPack, cb) {
     team1.matchesLost++;
   }
   
+  team1.matches++;
+  team2.matches++;
   team1.gamesWon += statPack.team1.gameWins;
   team2.gamesWon += statPack.team2.gameWins;
   team1.gamesLost += statPack.team2.gameWins;
   team2.gamesLost += statPack.team1.gameWins;
+  team1.games += match.scores.length;
+  team2.games += match.scores.length;
   team1.ptsFor += statPack.team1.pts;
   team2.ptsFor += statPack.team2.pts;
   team1.ptsAgainst += statPack.team2.pts;
@@ -162,6 +163,12 @@ var updateUsingStatPack = function (match, teams, statPack, cb) {
 
   team1.pct = parseFloat((team1.matchesWon / team1.matches).toFixed(3));
   team2.pct = parseFloat((team2.matchesWon / team2.matches).toFixed(3));
+
+  team1.avgPtsFor = parseFloat((team1.ptsFor / team1.games).toFixed(2));
+  team2.avgPtsFor = parseFloat((team2.ptsFor / team2.games).toFixed(2));
+
+  team1.avgPtsAgainst = parseFloat((team1.ptsAgainst / team1.games).toFixed(2));
+  team2.avgPtsAgainst = parseFloat((team2.ptsAgainst / team2.games).toFixed(2));
 
   team1.save(function (err, updatedTeam1) {
     if (err) {

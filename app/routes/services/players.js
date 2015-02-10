@@ -125,6 +125,8 @@ module.exports = {
         }
 
         player.pct = parseFloat((player.matchesWon / player.matches).toFixed(3));
+        player.avgPtsFor = parseFloat((player.ptsFor / player.games).toFixed(2));
+        player.avgPtsAgainst = parseFloat((player.ptsAgainst / player.games).toFixed(2));
       });
 
       // "Batch save" is not implemented yet in Mongoose, so we have to do it on our own

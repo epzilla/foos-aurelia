@@ -12,7 +12,9 @@ var TeamSchema = new Schema({
   gamesLost: Number,
   pct: Number,
   ptsFor: Number,
-  ptsAgainst: Number
+  ptsAgainst: Number,
+  avgPtsFor: Number,
+  avgPtsAgainst: Number
 });
 
 module.exports = mongoose.model('Team', TeamSchema);
