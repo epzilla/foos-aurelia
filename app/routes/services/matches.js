@@ -262,12 +262,34 @@ MatchService.changeScore = function (sock, data) {
       // Otherwise, broadcast the update
       if (!updatedMatch.active) {
         // Match is over
-        TeamService.updateTeamStats(updatedMatch, statPack, function (err) {
-          PlayerService.updatePlayerStats(updatedMatch, function () {
-            MatchService.io.emit('matchUpdate', {
-              status: 'finished',
-              winner: team
+        TeamService.updateTeamStats(updatedMatch, statPack, function (err, teams) {
+          if (err) {
+            sock.emit('matchError', {
+              status: 'matchUpdateFailed',
+              rollback: {
+                team: team,
+                score: rollbackScore
+              },
+              err: err
             });
+          }
+
+          PlayerService.updatePlayerStats(updatedMatch, teams, statPack, function (err) {
+            if (err) {
+              sock.emit('matchError', {
+                status: 'matchUpdateFailed',
+                rollback: {
+                  team: team,
+                  score: rollbackScore
+                },
+                err: err
+              });
+            } else {
+              MatchService.io.emit('matchUpdate', {
+                status: 'finished',
+                winner: team
+              });
+            }
           });
         });
 

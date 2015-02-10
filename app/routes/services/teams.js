@@ -163,15 +163,15 @@ var updateUsingStatPack = function (match, teams, statPack, cb) {
   team1.pct = parseFloat((team1.matchesWon / team1.matches).toFixed(3));
   team2.pct = parseFloat((team2.matchesWon / team2.matches).toFixed(3));
 
-  team1.save(function (err) {
+  team1.save(function (err, updatedTeam1) {
     if (err) {
       cb(err, null);
     }
-    team2.save(function (err) {
+    team2.save(function (err, updatedTeam2) {
       if (err) {
         cb(err, null);
       } else {
-        cb();
+        cb(null, [updatedTeam1, updatedTeam2]);
       }
     });
   });
@@ -266,11 +266,11 @@ module.exports = {
   },
 
   updateTeamStats: function (match, statPack, cb) {
+    var args = arguments;
     Team.find({ _id: { $in: [match.team1, match.team2] } }, function (err, teams) {
       if (err) {
         cb(err);
-      } else if (arguments.length === 2) {
-
+      } else if (args.length === 2) {
         updateStatsFromMatch(match, teams, cb);
       } else {
         updateUsingStatPack(match, teams, statPack, cb);

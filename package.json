@@ -65,5 +65,8 @@
       "bootstrap": "^3.3.1",
       "font-awesome": "^4.2.0"
     }
+  },
+  "dependencies": {
+    "lodash": "^3.1.0"
   }
 }
