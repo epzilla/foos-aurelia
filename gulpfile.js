@@ -22,6 +22,7 @@ var changed = require('gulp-changed');
 var plumber = require('gulp-plumber');
 var nodemon = require('gulp-nodemon');
 var imagemin = require('gulp-imagemin');
+var open = require('gulp-open');
 var tools = require('aurelia-tools');
 var protractor = require('gulp-protractor').protractor;
 var webdriver_update = require('gulp-protractor').webdriver_update;
@@ -78,7 +79,11 @@ gulp.task('nodemon', function () {
     {
       script: './server.js',
       ext: 'js,json',
+      watch: ['./app', '.'],
       nodeArgs: ['--debug']
+    })
+    .on('restart', function () {
+      livereload.changed();
     });
 });
 
@@ -97,11 +102,21 @@ gulp.task('stylus', function () {
     .pipe(changed(path.styles))
     .pipe(stylus())
     .pipe(autoprefixer({
-      browsers: ['last 2 versions'],
-      cascade: false
+      browsers: ['last 2 versions']
     }))
     .pipe(gulp.dest(path.styles))
     .pipe(livereload());
+});
+
+// Open Chrome to the site
+gulp.task('open', function () {
+  setTimeout( function () {
+    gulp.src('./index.html')
+      .pipe(open('', {
+        url: 'http://localhost:3000',
+        app: 'Google Chrome'
+      }));
+  }, 2000);
 });
 
 gulp.task('build-system', function () {
@@ -163,7 +178,7 @@ gulp.task('changelog', function(callback) {
 gulp.task('build', function(callback) {
   return runSequence(
     'clean',
-    ['build-system', 'build-html', 'images'],
+    ['build-system', 'build-html'],
     callback
   );
 });
@@ -194,7 +209,12 @@ gulp.task('build-dev-env', function () {
   tools.buildDevEnv();
 });
 
-gulp.task('serve', ['build', 'jade', 'stylus','images', 'nodemon']);
+gulp.task('serve', ['build'], function() {
+  return runSequence(
+    ['jade', 'stylus', 'images'],
+    'nodemon',
+    'open');
+});
 
 
 function reportChange(event){

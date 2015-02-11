@@ -37,6 +37,7 @@
     "gulp-jshint": "^1.9.0",
     "gulp-livereload": "^3.7.0",
     "gulp-nodemon": "^1.0.5",
+    "gulp-open": "^0.3.2",
     "gulp-plumber": "^0.6.6",
     "gulp-protractor": "^0.0.12",
     "gulp-stylus": "^2.0.0",

@@ -234,7 +234,7 @@ h3,
 .score-flash h2 {
   color: #fff;
   -webkit-animation: flash 1s linear infinite;
-  animation: flash 1s linear infinite;
+          animation: flash 1s linear infinite;
 }
 input[type=radio] {
   position: absolute;
@@ -280,11 +280,11 @@ input#by-team[type=radio]:checked ~ label[for="by-team"] {
   display: -ms-flexbox;
   display: flex;
   -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   -webkit-align-items: center;
-  -ms-flex-align: center;
-  align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 .flex-item {
   display: -webkit-flex;
