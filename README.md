@@ -42,4 +42,4 @@ bower install
 ```
 
 ### Try it out
-If all went well, you should be able to just run `gulp watch` to start the app
+If all went well, you should be able to just run `gulp` to start the app
