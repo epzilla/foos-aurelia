@@ -2,8 +2,9 @@
 A foosball scoretracker using the [Aurelia](http://aurelia.io) JavaScript MVC framework
 
 ## TODOs (in priority order)
-* Implement stats & history page
 * Make some sort of animation for when matches end
+* BUG: Sometimes if you click through the points really fast, by the time the match ends, all the timeouts have not finished yet, so it navigates back to the home screen and throws console errors.
+* BUG: If you're on the home scren and someone else starts a match, you don't see the players' names.
 * (more to come, as I think of them)
 
 ## Installation
