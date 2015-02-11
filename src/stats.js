@@ -17,6 +17,7 @@ export class Home {
   activate () {
     this.http.get(this.url + 'teams').then(response => {
       this.teams = response.content;
+      this.sort('teams');
     });
     this.http.get(this.url + 'players').then(response => {
       this.players = response.content;
