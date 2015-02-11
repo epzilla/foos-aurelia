@@ -11,7 +11,7 @@ export class Home {
     this.url = this.options.apiUrl;
     this.matchInProgress = false;
     this.http = http;
-    this.socket = io.connect(window.location.hostname.concat(':',this.options.socketPort));
+    this.socket = io.connect(window.location.hostname.concat(':',this.options.port));
     this.currentMatch = {scores: [], gameNum:0};
     this.moment = moment;
   }

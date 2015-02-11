@@ -12,15 +12,17 @@ MatchService.init = function (sock) {
   MatchService.io = sock;
   
   MatchService.io.on('connection', function (socket) {
-    var socketId = socket.id;
     var clientIp = socket.request.connection.remoteAddress;
     var clientPort = socket.request.connection.remotePort;
 
-    console.info('Socket connection from : ' + clientIp + ':' +  clientPort + '\n' +
-                 '                    ID : ' + socketId);
+    console.info('Socket connected : ' + clientIp + ':' + clientPort);
 
     socket.on('scoreChange', function (data) {
       MatchService.changeScore(socket, data);
+    });
+
+    socket.on('disconnect', function () {
+      console.info('Socket disconnected : ' + clientIp + ':' + clientPort);
     });
   });
 };
