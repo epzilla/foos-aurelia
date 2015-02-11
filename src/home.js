@@ -11,51 +11,15 @@ export class Home {
     this.url = this.options.apiUrl;
     this.matchInProgress = false;
     this.http = http;
-    this.socket = io.connect(window.location.hostname.concat(':',this.options.port));
     this.currentMatch = {scores: [], gameNum:0};
     this.moment = moment;
   }
 
   activate () {
+    this.socket = io.connect(window.location.hostname.concat(':',this.options.port), {forceNew: true});
     this.socket.on('connect', () => {
       console.info('Socket connected');
-    });
-
-    this.socket.on('disconnect', () => {
-      console.warn('Socket disconnected');
-    });
-
-    this.socket.on('matchUpdate', (data) => {
-      if (data.status === 'finished') {
-        this.currentMatch = {scores: []};
-        this.matchInProgress = false;
-      } else {
-        this.currentMatch = data.updatedMatch;
-        
-        if (data.updatedMatch.active) {
-          this.matchInProgress = true;
-          this.currentTeam1 = this.currentMatch.scores[this.currentMatch.gameNum - 1].team1;
-          this.currentTeam2 = this.currentMatch.scores[this.currentMatch.gameNum - 1].team2;
-        }
-
-        if (data.status === 'new') {
-          this.setUp();
-        }
-        // } else if (data.status === 'ok') {
-        //   this.addFlair(data.whatChanged);
-        // }
-      }
-    });
-
-    this.socket.on('matchError', (data) => {
-      console.log(data);
-      if (data.status === 'matchUpdateFailed') {
-        let gameIndex = this.currentMatch.gameNum - 1;
-        let team = data.team;
-        let score = data.rollbackScore;
-        this.currentMatch.scores[gameIndex][team] = score;
-        this.matchInProgress = false;
-      }
+      this.addSocketHandlers();
     });
 
     return this.http.get(this.url + 'matches/current').then(response => {
@@ -77,6 +41,36 @@ export class Home {
     this.team1Class = '';
     this.team2Class = '';
     this.setClasses();
+  }
+
+  addSocketHandlers () {
+    this.socket.on('disconnect', () => {
+      console.warn('Socket disconnected');
+    });
+
+    this.socket.on('matchUpdate', (data) => {
+      this.currentMatch = data.updatedMatch;
+      this.matchInProgress = true;
+      this.currentTeam1 = this.currentMatch.scores[this.currentMatch.gameNum - 1].team1;
+      this.currentTeam2 = this.currentMatch.scores[this.currentMatch.gameNum - 1].team2;
+      if (data.status === 'new') {
+        this.setUp();
+      }
+      if (data.status === 'finished'){
+        this.handleMatchEnd(data.winner);
+      }
+    });
+
+    this.socket.on('matchError', (data) => {
+      console.log(data);
+      if (data.status === 'matchUpdateFailed') {
+        let gameIndex = this.currentMatch.gameNum - 1;
+        let team = data.team;
+        let score = data.rollbackScore;
+        this.currentMatch.scores[gameIndex][team] = score;
+        this.matchInProgress = false;
+      }
+    });
   }
 
   setClasses () {
@@ -120,26 +114,25 @@ export class Home {
     this.socket.emit('scoreChange', payload);
   }
 
-  // addFlair (change) {
-  //   console.dir(change);
-  //   if (change.gameOver) {
-  //     // Do winning team flair
-  //     console.log(change);
-  //   } else {
-  //     // Do goal scored flair
-  //     var score = $('.' + change.team + '-scores .score').last();
-  //     score.addClass('score-flash');
-  //     window.setTimeout( () => {
-  //       score.removeClass('score-flash');
-  //     }, 5000);
-  //   }
-  // }
+  handleMatchEnd (winner) {
+    //TODO Add cool animation thingy here
+    // But for now, just...
+    console.log(`WINNERS: ${winner.title}!`);
+    window.setTimeout(() => {
+      this.matchInProgress = false;
+      this.currentMatch = {scores: [], gameNum:0};
+    }, 10000);
+  }
 
   startedMatch () {
     if (this.currentMatch._id) {
       return (this.currentMatch._id.concat(window.navigator.userAgent) === this.ls.get('matchID'));
     }
     return false;
+  }
+
+  deactivate () {
+    this.socket.disconnect();
   }
 
 }

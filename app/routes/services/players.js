@@ -129,18 +129,66 @@ module.exports = {
         player.avgPtsAgainst = parseFloat((player.ptsAgainst / player.games).toFixed(2));
       });
 
-      // "Batch save" is not implemented yet in Mongoose, so we have to do it on our own
-      for (var i = 0; i < players.length; i++) {
-        players[i].save(function (err) {
+      // Hack for now, because mongoose doesn't support batch updates
+      // We know there are 4 players, so we're just going to
+      // hard-code a pyramid of doom
+      if (players.length === 4) {
+        players[0].save(function (err) {
           if (err) {
             cb(err, null);
-          } else {
-            if (i === players.length) {
-              cb(null, players);
-            }
           }
+          players[1].save(function (err) {
+            if (err) {
+              cb(err, null);
+            }
+            players[2].save(function (err) {
+              if (err) {
+                cb(err, null);
+              }
+              players[3].save(function (err) {
+                if (err) {
+                  cb(err, null);
+                }
+                cb();
+              });
+            });
+          });
         });
       }
+
+    });
+  },
+
+  resetAll: function (req, res) {
+    Player.find(function (err, players) {
+      if (err) {
+        res.send(err);
+      }
+      var numPlayers = players.length;
+      var plNum = 0;
+      players.forEach(function (pl) {
+        pl.avgPtsFor = 0.0;
+        pl.avgPtsAgainst = 0.0;
+        pl.games = 0;
+        pl.gamesLost = 0;
+        pl.gamesWon = 0;
+        pl.matches = 0;
+        pl.matchesLost = 0;
+        pl.matchesWon = 0;
+        pl.pct = 0.000;
+        pl.ptsFor = 0;
+        pl.ptsAgainst = 0;
+
+        pl.save(function (err) {
+          if (err) {
+            res.status(500).send();
+          }
+          plNum++;
+          if (plNum === numPlayers) {
+            res.status(200).send();
+          }
+        });
+      });
     });
   }
 };

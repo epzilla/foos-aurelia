@@ -164,7 +164,10 @@ MatchService.endMatch = function (sock, match) {
       }
 
       if (matchOver) {
-        MatchService.io.emit('matchUpdate', {status: 'finished'});
+        MatchService.io.emit('matchUpdate', {
+          status: 'finished',
+          updatedMatch: updatedMatch
+        });
       } else {
         MatchService.io.emit('matchUpdate', {
           status: 'ok',
@@ -264,7 +267,7 @@ MatchService.changeScore = function (sock, data) {
       // Otherwise, broadcast the update
       if (!updatedMatch.active) {
         // Match is over
-        TeamService.updateTeamStats(updatedMatch, statPack, function (err, teams) {
+        TeamService.updateTeamStats(updatedMatch, statPack, function (err, teams, winnerID) {
           if (err) {
             sock.emit('matchError', {
               status: 'matchUpdateFailed',
@@ -287,9 +290,11 @@ MatchService.changeScore = function (sock, data) {
                 err: err
               });
             } else {
+              var w = teams[0]._id.equals(winnerID) ? teams[0] : teams[1];
               MatchService.io.emit('matchUpdate', {
                 status: 'finished',
-                winner: team
+                winner: w,
+                updatedMatch: updatedMatch
               });
             }
           });

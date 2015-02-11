@@ -58,11 +58,6 @@ var updateStatsFromMatch = function (match, teams, cb) {
     team.matches++;
   });
 
-  console.log('teams[0]._id: ' + teams[0]._id);
-  console.log('teams[1]._id: ' + teams[1]._id);
-  console.log('match.team1' + match.team1);
-  console.log('match.team2' + match.team2);
-
   if (teams[0]._id.equals(match.team1)) {
     team1 = teams[0];
     team2 = teams[1];
@@ -125,12 +120,7 @@ var updateStatsFromMatch = function (match, teams, cb) {
  * so we don't need to do them twice.
  */
 var updateUsingStatPack = function (match, teams, statPack, cb) {
-  var team1, team2;
-
-  console.log('teams[0]._id: ' + teams[0]._id);
-  console.log('teams[1]._id: ' + teams[1]._id);
-  console.log('match.team1' + match.team1);
-  console.log('match.team2' + match.team2);
+  var team1, team2, winnerID;
 
   if (teams[0]._id.equals(statPack.team1.id)) {
     team1 = teams[0];
@@ -141,9 +131,11 @@ var updateUsingStatPack = function (match, teams, statPack, cb) {
   }
   
   if (statPack.team1.isWinner) {
+    winnerID = team1._id;
     team1.matchesWon++;
     team2.matchesLost++;
   } else {
+    winnerID = team2._id;
     team2.matchesWon++;
     team1.matchesLost++;
   }
@@ -178,7 +170,7 @@ var updateUsingStatPack = function (match, teams, statPack, cb) {
       if (err) {
         cb(err, null);
       } else {
-        cb(null, [updatedTeam1, updatedTeam2]);
+        cb(null, [updatedTeam1, updatedTeam2], winnerID);
       }
     });
   });

@@ -15,12 +15,12 @@ export class Home {
   }
 
   activate () {
-    this.http.get(this.url + 'teams').then(response => {
-      this.teams = response.content;
+    let teamPromise = this.http.get(this.url + 'teams');
+    let playerPromise = this.http.get(this.url + 'players');
+    return Promise.all([teamPromise, playerPromise]).then(responses => {
+      this.teams = responses[0].content;
+      this.players = responses[1].content;
       this.sort('teams');
-    });
-    this.http.get(this.url + 'players').then(response => {
-      this.players = response.content;
       this.sort('players');
     });
   }

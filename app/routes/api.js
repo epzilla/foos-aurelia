@@ -24,6 +24,7 @@ router.post('/players', players.create);
 router.get('/players', players.findAll);
 router.get('/players/:playerId', players.find);
 router.put('/players/:playerId', players.update);
+// router.put('/reset/players', players.resetAll);
 
 // Matches
 router.post('/matches', matches.create);
