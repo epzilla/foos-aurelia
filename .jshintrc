@@ -68,6 +68,7 @@
     "exports": true,
     "ENV": true,
     "process": false,
+    "_": false,
     "__dirname": true,
     "describe": false,
     "beforeEach": false,

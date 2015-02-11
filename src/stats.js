@@ -15,19 +15,12 @@ export class Home {
   }
 
   activate () {
-    this.http.get(this.url + 'matches/current').then(response => {
-      if ((response.content.length > 0) && response.content[0].active) {
-        this.matchInProgress = true;
-        this.currentMatch = response.content[0];
-        var team1player1 = this.currentMatch.team1[0].name.split(' ');
-        var team1player2 = this.currentMatch.team1[1].name.split(' ');
-        var team2player1 = this.currentMatch.tails[0].name.split(' ');
-        var team2player2 = this.currentMatch.tails[1].name.split(' ');
-        this.team1Title = team1player1[team1player1.length - 1] + ' / ' + team1player2[team1player2.length - 1];
-        this.tailsTitle = team2player1[team2player1.length - 1] + ' / ' + team2player2[team2player2.length - 1];
-      } else {
-        this.matchInProgress = false;
-      }
+    this.http.get(this.url + 'teams').then(response => {
+      this.teams = response.content;
+    });
+    this.http.get(this.url + 'players').then(response => {
+      this.players = response.content;
+      this.sort('players');
     });
   }
 
@@ -35,4 +28,35 @@ export class Home {
     this.byTeam = isTeam;
   }
 
+  sort (whatToSort, sortBy) {
+    switch (sortBy) {
+      case 'name':
+        this[whatToSort] = _.sortByAll(this[whatToSort], 'name');
+        break;
+
+      case 'gameRecord':
+        this[whatToSort] = _.sortByAll(this[whatToSort], [
+          'gamesWon',
+          'pct',
+          'matchesWon',
+          'avgPtsFor',
+          'avgPtsAgainst']).reverse();
+        break;
+
+      case 'avgScore':
+        this[whatToSort] = _.sortBy(this[whatToSort], function (a) {
+          return (a.avgPtsFor - a.avgPtsAgainst);
+        }).reverse();
+        break;
+
+      default:
+        this[whatToSort] = _.sortByAll(this[whatToSort], [
+          'pct',
+          'matchesWon',
+          'gamesWon',
+          'avgPtsFor',
+          'avgPtsAgainst',
+          'name']).reverse();
+    }
+  }
 }
