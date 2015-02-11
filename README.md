@@ -3,7 +3,6 @@ A foosball scoretracker using the [Aurelia](http://aurelia.io) JavaScript MVC fr
 
 ## TODOs (in priority order)
 * Make some sort of animation for when matches end
-* BUG: If you're on the home screen and someone else starts a match, you don't see the players' names.
 * ENHANCEMENT: Offline-first (sometimes the wi-fi is spotty in the foosball room. Perhaps if we lose connection, we just keep score on the device, then when we regain the connection, we can send the update.
 * (more to come, as I think of them)
 

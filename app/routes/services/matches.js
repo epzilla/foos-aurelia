@@ -57,19 +57,18 @@ MatchService.create = function (req, res) {
           res.send(err);
         }
 
-        Match.findById(newMatch._id, function (err, match) {
-          if (err) {
-            res.send(err);
-          }
+        Match.findById(newMatch._id)
+          .populate('team1 team2')
+          .exec(function (err, match) {
+            if (err) {
+              res.send(err);
+            }
 
-          match.team1 = team1;
-          match.team2 = team2;
-
-          MatchService.io.emit('matchUpdate', {
-            status: 'new',
-            updatedMatch: match
-          });
-          res.json(match);
+            MatchService.io.emit('matchUpdate', {
+              status: 'new',
+              updatedMatch: match
+            });
+            res.json(match);
         });
       });
     });
