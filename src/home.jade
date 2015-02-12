@@ -44,42 +44,50 @@ template
         
         .row.tall.stepper.margin-top-1em.heads-stepper(show.bind="startedMatch() && currentMatch.gameNum !== 2")
           .col-xs-4.minus.no-pad
-            button.btn.btn-expand(click.trigger="changeScore('team1','minus')")
+            button.btn.btn-expand(click.trigger="changeScore('team1','minus')",
+                                  disabled.bind='currentTeam1 === 0')
               i.fa.fa-minus
           .col-xs-4
             h3 ${team1Title}
           .col-xs-4.plus.no-pad
-            button.btn.btn-expand(click.trigger="changeScore('team1','plus')")
+            button.btn.btn-expand(click.trigger="changeScore('team1','plus')",
+                                  disabled.bind='currentTeam1 === 10')
               i.fa.fa-plus
         
         .row.tall.stepper.tails-stepper(show.bind="startedMatch() && currentMatch.gameNum !== 2")
           .col-xs-4.minus.no-pad
-            button.btn.btn-expand(click.trigger="changeScore('team2','minus')")
+            button.btn.btn-expand(click.trigger="changeScore('team2','minus')",
+                                  disabled.bind='currentTeam2 === 0')
               i.fa.fa-minus
           .col-xs-4
             h3 ${team2Title}
           .col-xs-4.plus.no-pad
-            button.btn.btn-expand(click.trigger="changeScore('team2','plus')")
+            button.btn.btn-expand(click.trigger="changeScore('team2','plus')",
+                                  disabled.bind='currentTeam2 === 10')
               i.fa.fa-plus
 
         .row.tall.stepper.margin-top-1em.tails-stepper(show.bind="startedMatch() && currentMatch.gameNum === 2")
           .col-xs-4.minus.no-pad
-            button.btn.btn-expand(click.trigger="changeScore('team1','minus')")
+            button.btn.btn-expand(click.trigger="changeScore('team1','minus')",
+                                  disabled.bind='currentTeam1 === 0')
               i.fa.fa-minus
           .col-xs-4
             h3 ${team1Title}
           .col-xs-4.plus.no-pad
-            button.btn.btn-expand(click.trigger="changeScore('team1','plus')")
+            button.btn.btn-expand(click.trigger="changeScore('team1','plus')",
+                                  disabled.bind='currentTeam1 === 10')
               i.fa.fa-plus
         
         .row.tall.stepper.heads-stepper(show.bind="startedMatch() && currentMatch.gameNum === 2")
           .col-xs-4.minus.no-pad
-            button.btn.btn-expand(click.trigger="changeScore('team2','minus')")
+            button.btn.btn-expand(click.trigger="changeScore('team2','minus')",
+                                  disabled.bind='currentTeam2 === 0')
               i.fa.fa-minus
           .col-xs-4
             h3 ${team2Title}
           .col-xs-4.plus.no-pad
-            button.btn.btn-expand(click.trigger="changeScore('team2','plus')")
+            button.btn.btn-expand(click.trigger="changeScore('team2','plus')",
+                                  disabled.bind='currentTeam2 === 10')
               i.fa.fa-plus
         
         .row(show.bind="startedMatch()")
