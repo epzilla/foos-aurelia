@@ -7,6 +7,7 @@ export class App {
     this.router = router;
     this.router.configure(config => {
       config.title = 'SnappyFoos';
+      config.options.pushState = true;
       config.map([
         { route: ['','home'],  moduleId: 'home', nav: true, title:'Home' },
         { route: 'newMatch',  moduleId: 'newMatch', nav: false },
