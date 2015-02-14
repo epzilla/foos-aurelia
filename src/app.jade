@@ -1,5 +1,8 @@
 template
-  import(from="./nav-bar")
-  nav-bar(router.bind="router")
+  import(from='./nav-bar')
+  import(from='./alerts')
+  nav-bar(router.bind='router')
+  alerts
+
   .page-host
     router-view

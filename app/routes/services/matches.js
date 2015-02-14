@@ -21,6 +21,10 @@ MatchService.init = function (sock) {
       MatchService.changeScore(socket, data);
     });
 
+    socket.on('scoreBatchUpdate', function (data) {
+      MatchService.update(socket, data);
+    });
+
     socket.on('disconnect', function () {
       console.info('Socket disconnected : ' + clientIp + ':' + clientPort);
     });
@@ -98,27 +102,38 @@ MatchService.find = function (req, res) {
     });
 };
 
-MatchService.update = function (req, res) {
-  Match.findById(req.params.matchId, function (err, match) {
+MatchService.update = function (sock, data) {
+  Match.findById(data._id, function (err, match) {
     if (err) {
-      res.send(err);
-    }
+      sock.emit('matchError', {
+        status: 'matchUpdateFailed',
+        err: err
+      });
+    } else {
 
-    var newVals = req.body;
-    for (var prop in newVals) {
-      if (newVals.hasOwnProperty(prop)) {
-        if (match[prop] !== undefined) {
-          match[prop] = newVals[prop];
+      for (var prop in data) {
+        if (data.hasOwnProperty(prop)) {
+          // We want to leave teams alone, but allow point updates
+          if ((match[prop] !== undefined) && !(prop === 'team1' || prop === 'team2')) {
+            match[prop] = data[prop];
+          }
         }
       }
-    }
 
-    match.save(function (err) {
-      if (err) {
-        res.send(err);
-      }
-      res.json({ message: 'Match updated!' });
-    });
+      match.save(function (err, updatedMatch) {
+        if (err) {
+          sock.emit('matchError', {
+            status: 'matchUpdateFailed',
+            err: err
+          });
+        } else {
+          MatchService.io.emit('matchUpdate', {
+            status: 'ok',
+            updatedMatch: updatedMatch
+          });
+        }
+      });
+    }
   });
 };
 

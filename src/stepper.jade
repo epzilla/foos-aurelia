@@ -1,0 +1,46 @@
+template
+  style(type="text/css").
+    @import "jspm_packages/github/twbs/bootstrap@3.3.2/css/bootstrap.min.css";  
+    @import "jspm_packages/npm/font-awesome@4.3.0/css/font-awesome.min.css";
+    .stepper-container span,
+    .stepper-container button {
+      display: inline-block;
+      font-size: 36px;
+    }
+    .stepper-container {
+      width: 10em;
+      height: 6em;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-align-items: center;
+          -ms-flex-align: center;
+              align-items: center;
+      -webkit-justify-content: right;
+          -ms-flex-pack: right;
+              justify-content: right;
+    }
+    .button-container {
+      display: block;
+      width: 70px;
+      margin: 0;
+      padding: 0;
+    }
+    .stepper-container span {
+      display: block;
+      width: 5em;
+    }
+    .button-container button.btn {
+      width: 60px;
+      height: 40px;
+      margin: 2px;
+      font-size: 18px;
+    }
+  .stepper-container.container
+    span ${num}
+    .button-container
+      button.btn.btn-primary(click.delegate="increment()")
+        i.fa.fa-plus
+      button.btn.btn-primary(click.delegate="decrement()")
+        i.fa.fa-minus
+      div

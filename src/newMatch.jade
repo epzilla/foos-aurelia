@@ -1,4 +1,5 @@
 template
+  import(from='stepper')
   section.text-center.container
     h1 Start New Match
     form(role='form', submit.delegate='startNewGame()')
@@ -10,10 +11,17 @@ template
         select.heads-form(selected-item.two-way='team1Player2')
           option(value.bind='player._id', model.bind='player', repeat.for='player of players') ${player.name}
       h3 Tails
-      .form-group
-        select.tails-form(selected-item.two-way='team2Player1')
-          option(value.bind='player._id', model.bind='player', repeat.for='player of players') ${player.name}
-      .form-group
-        select.tails-form(selected-item.two-way='team2Player2')
-          option(value.bind='player._id', model.bind='player', repeat.for='player of players') ${player.name}
+      .pad-bottom-1em
+        .form-group
+          select.tails-form(selected-item.two-way='team2Player1')
+            option(value.bind='player._id', model.bind='player', repeat.for='player of players') ${player.name}
+        .form-group
+          select.tails-form(selected-item.two-way='team2Player2')
+            option(value.bind='player._id', model.bind='player', repeat.for='player of players') ${player.name}
+      .form-group.pad-bottom-1em
+        h4 Best of
+        stepper(num.bind='bestOf', step.bind='2', min.bind='1', max.bind='7')
+      .form-group.pad-bottom-1em
+        h4 Play to
+        stepper(num.bind='playTo', step.bind='1', min.bind='5', max.bind='20')
       button.btn.btn-primary.btn-lg(disabled.bind='isWorking', type='submit') Submit

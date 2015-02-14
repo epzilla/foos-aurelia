@@ -12,20 +12,30 @@ export class NewMatch {
     this.http = http;
     this.theRouter = router;
     this.http.defaultRequestHeaders.add('Content-Type', 'application/json');
-    this.players = [];
+    this.players = this.ls.get('players') || [];
+    this.setInitialPlayers();
     this.playersURL = this.options.apiUrl + 'players';
     this.matchesURL = this.options.apiUrl + 'matches';
     this.isWorking = false;
   }
 
   activate () {
-    return this.http.get(this.playersURL).then(response => {
-      this.players = response.content;
-      this.team1Player1 = this.players[0];
-      this.team1Player2 = this.players[1];
-      this.team2Player1 = this.players[2];
-      this.team2Player2 = this.players[3];
+    this.playTo = 10;
+    this.bestOf = 3;
+    this.http.get(this.playersURL).then(response => {
+      if (this.players.toString() !== response.content.toString()) {
+        this.players = response.content;
+        this.ls.set('players', this.players);
+        this.setInitialPlayers();
+      }
     });
+  }
+
+  setInitialPlayers () {
+    this.team1Player1 = this.players[0];
+    this.team1Player2 = this.players[1];
+    this.team2Player1 = this.players[2];
+    this.team2Player2 = this.players[3];
   }
 
   startNewGame () {

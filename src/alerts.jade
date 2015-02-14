@@ -1,0 +1,5 @@
+template
+  .alert(class='alert-${alert.type}', repeat.for='alert of alerts')
+    span
+      i.fa(class='fa-${alert.icon}')
+      | ${alert.msg}
