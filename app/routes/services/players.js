@@ -29,7 +29,7 @@ module.exports = {
   },
 
   findAll: function (req, res) {
-    Player.find(function (err, players) {
+    Player.find().sort({'name': 'asc'}).exec(function (err, players) {
       if (err) {
         res.send(err);
       }
