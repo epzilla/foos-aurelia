@@ -61,6 +61,7 @@
   // ..
 
   "globals"       : {
+    "$": false,
     "alert": false,
     "require": false,
     "module": true,

@@ -1,13 +1,15 @@
 import {HttpClient} from 'aurelia-http-client';
 import {Config} from './config';
+import {NavCloser} from './nav-closer';
 import {LocalStorage} from './local-storage';
 
 export class Home {
-  static inject() { return [HttpClient, Config, LocalStorage]; }
+  static inject() { return [HttpClient, Config, NavCloser, LocalStorage]; }
 
-  constructor (http, config, localStorage) {
+  constructor (http, config, navClose, localStorage) {
     this.options = config.conf();
     this.ls = localStorage;
+    this.navClose = navClose;
     this.url = this.options.apiUrl;
     this.http = http;
     this.moment = moment;
@@ -15,6 +17,7 @@ export class Home {
   }
 
   activate () {
+    this.navClose.close();
     let teamPromise = this.http.get(this.url + 'teams');
     let playerPromise = this.http.get(this.url + 'players');
     return Promise.all([teamPromise, playerPromise]).then(responses => {

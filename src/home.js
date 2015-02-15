@@ -1,14 +1,16 @@
 import {HttpClient} from 'aurelia-http-client';
 import {Config} from './config';
 import {LocalStorage} from './local-storage';
+import {NavCloser} from './nav-closer';
 import {EventAggregator} from 'aurelia-event-aggregator';
 
 export class Home {
-  static inject() { return [HttpClient, Config, LocalStorage, EventAggregator]; }
+  static inject() { return [HttpClient, Config, LocalStorage, NavCloser, EventAggregator]; }
 
-  constructor (http, config, localStorage, eventAgg) {
+  constructor (http, config, localStorage, navClose, eventAgg) {
     this.options = config.conf();
     this.ls = localStorage;
+    this.navClose = navClose;
     this.events = eventAgg;
     this.url = this.options.apiUrl;
     this.matchInProgress = false;
@@ -19,6 +21,7 @@ export class Home {
   }
 
   activate () {
+    this.navClose.close();
     this.socket = io.connect(window.location.hostname.concat(':',this.options.port), {forceNew: true});
     this.socket.on('connect', () => {
       console.info('Socket connected');
