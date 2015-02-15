@@ -35,7 +35,7 @@ mongoose.connect('mongodb://localhost:27017/foos');
 app.use('/api', routes.router);
 app.set('port', port);
 
-app.get('/', function (req, res) {
+app.get('/*', function (req, res) {
   console.log('loading index file');
   res.render('index.html');
 });
