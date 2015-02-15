@@ -234,6 +234,11 @@ input#by-team[type=radio]:checked ~ label[for="by-team"] {
     padding-right: 10px;
   }
 }
+@media (min-width: 992px) {
+  .main-table {
+    padding-right: 35px;
+  }
+}
 .jumbotron {
   width: 100% !important;
   margin-left: 0 !important;

@@ -56,8 +56,7 @@ export class Home {
           'matchesWon',
           'gamesWon',
           'avgPtsFor',
-          'avgPtsAgainst',
-          'name']).reverse();
+          'avgPtsAgainst']).reverse();
     }
   }
 }

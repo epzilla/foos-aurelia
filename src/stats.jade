@@ -11,7 +11,7 @@ template
           input#by-team(type="radio", name="toggle", change.delegate='toggleTeam(true)', value="2")
           label(for="by-team") By Team
 
-    section.row(show.bind='!byTeam')
+    section.row.main-table(show.bind='!byTeam')
       section.col-xs-12
         table.table.table-hover.table-responsive.table-striped.text-center.table-bordered
           thead
@@ -31,7 +31,7 @@ template
               td.sortable.hidden-xs ${player.gamesWon ? (player.gamesWon / player.games).toPrecision(4) : '.000'}
               td.sortable ${player.avgPtsFor} - ${player.avgPtsAgainst}
 
-    section.row(show.bind='byTeam')
+    section.row.main-table(show.bind='byTeam')
       section.col-xs-12
         table.table.table-hover.table-responsive.table-striped.text-center.table-bordered
           thead
