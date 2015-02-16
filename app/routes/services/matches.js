@@ -137,6 +137,19 @@ MatchService.update = function (sock, data) {
   });
 };
 
+MatchService.getRecentMatches = function (req, res) {
+  Match.find()
+    .sort({'endTime': 'desc'})
+    .limit(req.param('num') || 10)
+    .populate('team1 team2')
+    .exec(function (err, matches) {
+      if (err) {
+        res.send(err);
+      }
+      res.json(matches);
+    });
+};
+
 MatchService.getCurrentMatch = function (req, res) {
   Match.find({ active: true})
     .populate('team1 team2')
