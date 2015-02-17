@@ -14,7 +14,7 @@ var server       = require('http').createServer(app);
 app.use(morgan('dev'));
 
 // configure body parser
-app.use(bodyParser.json());
+app.use(bodyParser());
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 app.use(express.static(path.join(__dirname, '.')));
