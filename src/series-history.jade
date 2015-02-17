@@ -2,19 +2,22 @@ template
   .row
     .col-sm-12
       h3.underline Series History
-  .row
+  .row(show.bind='series.matches.length === 0')
+    .col-sm-12
+      h4 First Meeting
+  .row(show.bind='series.matches.length > 0')
     .col-sm-12
       h4 ${series.quickStats.matchRecord}
-  .row
+  .row(show.bind='series.matches.length > 0')
     .col-sm-12
       <strong>Game Record: </strong>&nbsp; <span>${series.quickStats.gameRecord}</span>
-  .row.pad-bottom-1em
+  .row.pad-bottom-1em(show.bind='series.matches.length > 0')
     .col-sm-12
       <strong>Average Score: </strong>&nbsp; <span>${series.quickStats.avg}</span>
-  .row
+  .row(show.bind='series.matches.length > 0')
     .col-sm-12
       h4.underline Matches
-  .row
+  .row(show.bind='series.matches.length > 0')
     .score-box
       .row.pad-bottom-1em(repeat.for='match of series.matches')
         .row
@@ -25,7 +28,7 @@ template
             i.fa.fa-check.text-success(show.bind='match.team1._id == match.winner')
           .col-xs-5.no-pad-left.text-left
             span ${match.team1.title}
-          .col-xs-1.no-pad(repeat.for='score of match.scores', class='${score.team1 > score.team2 ? "winning-score" \
+          .col-xs-1.no-pad.text-center(repeat.for='score of match.scores', class='${score.team1 > score.team2 ? "winning-score" \
             : ""} ${score.team2 > score.team1 ? "losing-score" : ""}')
             ${score.team1}
         .row
@@ -33,7 +36,7 @@ template
             i.fa.fa-check.text-success(show.bind='match.team2._id == match.winner')
           .col-xs-5.no-pad-left.text-left
             span ${match.team2.title}
-          .col-xs-1.no-pad(repeat.for='score of match.scores', class='${score.team2 > score.team1 ? "winning-score" \
+          .col-xs-1.no-pad.text-center(repeat.for='score of match.scores', class='${score.team2 > score.team1 ? "winning-score" \
             : ""} ${score.team1 > score.team2 ? "losing-score" : ""}')
             ${score.team2}
         .row

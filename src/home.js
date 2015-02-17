@@ -54,11 +54,7 @@ export class Home {
         this.matchInProgress = false;
       }
 
-      this.http.get(this.url + 'matches/recent').then(response => {
-        var recents = response.content;
-        this.formatMatches(recents);
-        this.recents = recents;
-      });
+      this.getRecentMatches();
     });
   }
 
@@ -70,6 +66,14 @@ export class Home {
     this.team1Class = '';
     this.team2Class = '';
     this.setClasses();
+  }
+
+  getRecentMatches () {
+    this.http.get(this.url + 'matches/recent').then(response => {
+      var recents = response.content;
+      this.formatMatches(recents);
+      this.recents = recents;
+    });
   }
 
   formatMatches (matches) {
@@ -177,6 +181,7 @@ export class Home {
     window.setTimeout(() => {
       this.matchInProgress = false;
       this.currentMatch = {scores: [], gameNum:0};
+      this.getRecentMatches();
     }, 10000);
   }
 
