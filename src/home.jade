@@ -1,5 +1,6 @@
 template
   import(from='./series-history')
+  import(from='./recents')
   section.container.container-fluid
     section.jumbotron.text-center
       div.text-center(show.bind="!matchInProgress")
@@ -111,3 +112,7 @@ template
         hr
         
         series-history(series.bind='series')
+
+    hr
+
+    recent-matches(recents.bind='recents')

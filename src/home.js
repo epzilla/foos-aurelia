@@ -36,15 +36,17 @@ export class Home {
         this.matchInProgress = true;
         this.currentMatch = response.content[0];
         this.setUp();
-        return this.http.get(this.url + 'matches/series?team1=' + this.currentMatch.team1._id +
-          '&team2=' + this.currentMatch.team2._id).then(resp => {
-            var stats = resp.content;
-            stats.matches.forEach(function (match) {
-              var start = self.moment(match.startTime);
-              var end = self.moment(match.endTime);
-              match.formattedDate = self.moment(match.endTime).format('MMMM D');
-              match.mins = end.diff(start, 'minutes');
-            });
+        
+        this.http.get(this.url + 'matches/recent').then(response => {
+          var recents = response.content;
+          this.formatMatches(recents);
+          this.recents = recents;
+        });
+
+        this.http.get(this.url + 'matches/series?team1=' + this.currentMatch.team1._id +
+          '&team2=' + this.currentMatch.team2._id).then(response => {
+            var stats = response.content;
+            this.formatMatches(stats.matches);
             this.series = stats;
           });
       } else {
@@ -61,6 +63,16 @@ export class Home {
     this.team1Class = '';
     this.team2Class = '';
     this.setClasses();
+  }
+
+  formatMatches (matches) {
+    var self = this;
+    matches.forEach(function (match) {
+      var start = self.moment(match.startTime);
+      var end = self.moment(match.endTime);
+      match.formattedDate = self.moment(match.endTime).format('MMMM D');
+      match.mins = end.diff(start, 'minutes');
+    });
   }
 
   addSocketHandlers () {

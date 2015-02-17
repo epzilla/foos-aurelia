@@ -142,63 +142,79 @@ section {
   max-width: 750px !important;
   margin: 0 auto;
 }
-series-history {
+series-history,
+recent-matches {
   font-size: 28px;
   width: 65%;
   margin: 0 auto;
 }
-series-history h3 {
+series-history h3,
+recent-matches h3 {
   font-size: 32px;
 }
-series-history h4 {
+series-history h4,
+recent-matches h4 {
   font-size: 28px;
   font-weight: bolder !important;
 }
-series-history .footnote {
+series-history .footnote,
+recent-matches .footnote {
   font-style: italic;
   font-size: 20px;
   color: #c0c0c0;
 }
 @media (max-width: 1050px) {
-  series-history {
+  series-history,
+  recent-matches {
     width: 75%;
   }
 }
 @media (max-width: 925px) {
-  series-history {
+  series-history,
+  recent-matches {
     width: 90%;
   }
 }
 @media (max-width: 825px) {
-  series-history {
+  series-history,
+  recent-matches {
     width: 100%;
   }
 }
 @media (max-width: 675px) {
-  series-history {
+  series-history,
+  recent-matches {
     font-size: 20px;
   }
-  series-history h3 {
+  series-history h3,
+  recent-matches h3 {
     font-size: 24px;
   }
-  series-history h4 {
+  series-history h4,
+  recent-matches h4 {
     font-size: 20px;
   }
-  series-history .footnote {
+  series-history .footnote,
+  recent-matches .footnote {
     font-size: 14px;
   }
 }
 @media (max-width: 550px) {
-  series-history {
+  series-history,
+  recent-matches {
     font-size: 16px;
+    margin: 0 auto;
   }
-  series-history h3 {
+  series-history h3,
+  recent-matches h3 {
     font-size: 18px;
   }
-  series-history h4 {
+  series-history h4,
+  recent-matches h4 {
     font-size: 16px;
   }
-  series-history .footnote {
+  series-history .footnote,
+  recent-matches .footnote {
     font-size: 12px;
   }
 }
