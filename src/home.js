@@ -26,6 +26,13 @@ export class Home {
     this.socket = io.connect(window.location.hostname.concat(':',this.options.port), {forceNew: true});
     this.socket.on('connect', () => {
       console.info('Socket connected');
+      if (!this.online) {
+        this.events.publish('alerts', {
+          type: 'success',
+          icon: 'thumbs-o-up',
+          msg: 'And we\'re back!'
+        });
+      }
       this.online = true;
       this.addSocketHandlers();
       this.pushScoreUpdate();

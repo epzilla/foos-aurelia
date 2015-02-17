@@ -3,7 +3,7 @@ template
     section.row
       section.col-xs-12
         h1 Stats &#38; History
-    section.row
+    section.row(show.bind='teams.length > 0')
       section.flex-container.col-xs-12
         section.flex-item.width-200
           input#by-player(type="radio", name="toggle", value="1", change.delegate='toggleTeam(false)', checked="checked")
@@ -26,7 +26,7 @@ template
             tr(repeat.for='player of players')
               td.sortable ${player.name}
               td.sortable ${player.matchesWon} - ${player.matchesLost}
-              td.sortable.hidden-xs ${player.pct < 1 ? ('.' + player.pct.toPrecision(3).toString().split('.')[1]) : '1.000'}
+              td.sortable.hidden-xs ${player.pct < 1 ? ('.' + player.pct.toPrecision(4).toString().split('.')[1]) : '1.000'}
               td.sortable ${player.gamesWon} - ${player.gamesLost}
               td.sortable.hidden-xs ${player.gamesWon ? (player.gamesWon / player.games).toPrecision(3) : '.000'}
               td.sortable ${player.avgPtsFor} - ${player.avgPtsAgainst}
@@ -46,7 +46,7 @@ template
             tr(repeat.for='team of teams')
               td.sortable ${team.title}
               td.sortable ${team.matchesWon} - ${team.matchesLost}
-              td.sortable.hidden-xs ${team.pct < 1 ? ('.' + team.pct.toPrecision(3).toString().split('.')[1]) : '1.000'}
+              td.sortable.hidden-xs ${team.pct < 1 ? ('.' + team.pct.toPrecision(4).toString().split('.')[1]) : '1.000'}
               td.sortable ${team.gamesWon} - ${team.gamesLost}
               td.sortable.hidden-xs ${team.gamesWon ? (team.gamesWon / team.games).toPrecision(3) : '.000'}
               td.sortable ${team.avgPtsFor} - ${team.avgPtsAgainst}

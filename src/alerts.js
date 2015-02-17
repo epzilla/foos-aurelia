@@ -9,9 +9,12 @@ export class Alerts {
     this.alerts = [];
     this.events = eventAgg;
     this.events.subscribe('alerts', payload => {
+      if (this.alerts.length > 0) {
+        this.alerts = [];
+      }
       this.alerts.push(payload);
       window.setTimeout(() => {
-        this.alerts.pop();
+        this.alerts.shift();
       }, 5000);
     });
   }

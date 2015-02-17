@@ -113,6 +113,6 @@ template
         
         series-history(series.bind='series')
 
-    hr
+    hr(show.bind='recents.length > 0')
 
-    recent-matches(recents.bind='recents')
+    recent-matches(recents.bind='recents', show.bind='recents.length > 0')
