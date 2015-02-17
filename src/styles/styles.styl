@@ -54,9 +54,8 @@ section
 .pictureDetail
   max-width 425px
 
-.winning-score
-  h2
-    font-weight bolder !important
+.winning-score, .winning-score h2
+  font-weight bolder !important
 
 .losing-score
   color #888
@@ -68,6 +67,12 @@ section
 
 .underline
   text-decoration underline
+
+.italicize
+  font-style italic
+  
+.text-silver
+  color silver
 
 .heads:before, .heads-form:before
   background-color black
@@ -132,7 +137,47 @@ section
   color black
 
 .no-pad
-  padding 0
+  padding 0 !important
+
+.score-box
+  max-width 750px !important
+  margin 0 auto
+
+series-history
+  font-size 28px
+  width 65%
+  margin 0 auto
+  h3
+    font-size 32px
+  h4
+    font-size 28px
+    font-weight bolder !important
+  .footnote
+    font-style italic
+    font-size 20px
+    color silver
+  @media (max-width 1050px)
+    width 75%
+  @media (max-width 925px)
+    width 90%
+  @media (max-width 825px)
+    width 100%
+  @media (max-width 675px)
+    font-size 20px
+    h3
+      font-size 24px
+    h4
+      font-size 20px
+    .footnote
+      font-size 14px
+  @media (max-width 550px)
+    font-size 16px
+    h3
+      font-size 18px
+    h4
+      font-size 16px
+    .footnote
+      font-size 12px
 
 @media(max-width 550px)
   .page-host
@@ -140,15 +185,6 @@ section
   .stepper
     h3, .h3
       font-size 18px !important
-
-.no-pad-xs
-  padding 0
-
-.pad-bottom-1em
-  padding-bottom 1em
-
-.margin-top-1em
-  margin-top 1em
   
 .center-by-margin
   margin 0 auto
@@ -237,6 +273,18 @@ input#by-team[type=radio]:checked
 @media (min-width 992px)
   .main-table
     padding-right 35px
+
+.no-pad-xs
+  padding 0 !important
+  
+.no-pad-left
+  padding-left 0 !important
+
+.pad-bottom-1em
+  padding-bottom 1em !important
+
+.margin-top-1em
+  margin-top 1em !important
 
 // Overriding Bootstrap
 .jumbotron

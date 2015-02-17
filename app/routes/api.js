@@ -31,6 +31,7 @@ router.post('/matches', matches.create);
 router.get('/matches', matches.findAll);
 router.get('/matches/current', matches.getCurrentMatch);
 router.get('/matches/recent', matches.getRecentMatches);
+router.get('/matches/series', matches.getSeriesHistory);
 router.get('/matches/:matchId', matches.find);
 router.put('/matches/:matchId', matches.update);
 router.put('/matches/changeScore', matches.changeScore);

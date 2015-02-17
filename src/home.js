@@ -21,6 +21,7 @@ export class Home {
   }
 
   activate () {
+    var self = this;
     this.navClose.close();
     this.socket = io.connect(window.location.hostname.concat(':',this.options.port), {forceNew: true});
     this.socket.on('connect', () => {
@@ -35,6 +36,17 @@ export class Home {
         this.matchInProgress = true;
         this.currentMatch = response.content[0];
         this.setUp();
+        return this.http.get(this.url + 'matches/series?team1=' + this.currentMatch.team1._id +
+          '&team2=' + this.currentMatch.team2._id).then(resp => {
+            var stats = resp.content;
+            stats.matches.forEach(function (match) {
+              var start = self.moment(match.startTime);
+              var end = self.moment(match.endTime);
+              match.formattedDate = self.moment(match.endTime).format('MMMM D');
+              match.mins = end.diff(start, 'minutes');
+            });
+            this.series = stats;
+          });
       } else {
         this.matchInProgress = false;
       }
@@ -101,14 +113,6 @@ export class Home {
 
   endMatch () {
     alert('Ending match!');
-  }
-
-  getTeam1Class () {
-    return 'winning-score';
-  }
-
-  getTeam2Class () {
-    return 'losing-score';
   }
 
   changeScore (team, plusMinus) {

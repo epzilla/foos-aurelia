@@ -46,6 +46,7 @@ section {
 .pictureDetail {
   max-width: 425px;
 }
+.winning-score,
 .winning-score h2 {
   font-weight: bolder !important;
 }
@@ -59,6 +60,12 @@ section {
 }
 .underline {
   text-decoration: underline;
+}
+.italicize {
+  font-style: italic;
+}
+.text-silver {
+  color: #c0c0c0;
 }
 .heads:before,
 .heads-form:before {
@@ -129,7 +136,71 @@ section {
   color: #000;
 }
 .no-pad {
-  padding: 0;
+  padding: 0 !important;
+}
+.score-box {
+  max-width: 750px !important;
+  margin: 0 auto;
+}
+series-history {
+  font-size: 28px;
+  width: 65%;
+  margin: 0 auto;
+}
+series-history h3 {
+  font-size: 32px;
+}
+series-history h4 {
+  font-size: 28px;
+  font-weight: bolder !important;
+}
+series-history .footnote {
+  font-style: italic;
+  font-size: 20px;
+  color: #c0c0c0;
+}
+@media (max-width: 1050px) {
+  series-history {
+    width: 75%;
+  }
+}
+@media (max-width: 925px) {
+  series-history {
+    width: 90%;
+  }
+}
+@media (max-width: 825px) {
+  series-history {
+    width: 100%;
+  }
+}
+@media (max-width: 675px) {
+  series-history {
+    font-size: 20px;
+  }
+  series-history h3 {
+    font-size: 24px;
+  }
+  series-history h4 {
+    font-size: 20px;
+  }
+  series-history .footnote {
+    font-size: 14px;
+  }
+}
+@media (max-width: 550px) {
+  series-history {
+    font-size: 16px;
+  }
+  series-history h3 {
+    font-size: 18px;
+  }
+  series-history h4 {
+    font-size: 16px;
+  }
+  series-history .footnote {
+    font-size: 12px;
+  }
 }
 @media (max-width: 550px) {
   .page-host {
@@ -139,15 +210,6 @@ section {
   .stepper .h3 {
     font-size: 18px !important;
   }
-}
-.no-pad-xs {
-  padding: 0;
-}
-.pad-bottom-1em {
-  padding-bottom: 1em;
-}
-.margin-top-1em {
-  margin-top: 1em;
 }
 .center-by-margin {
   margin: 0 auto;
@@ -238,6 +300,18 @@ input#by-team[type=radio]:checked ~ label[for="by-team"] {
   .main-table {
     padding-right: 35px;
   }
+}
+.no-pad-xs {
+  padding: 0 !important;
+}
+.no-pad-left {
+  padding-left: 0 !important;
+}
+.pad-bottom-1em {
+  padding-bottom: 1em !important;
+}
+.margin-top-1em {
+  margin-top: 1em !important;
 }
 .jumbotron {
   width: 100% !important;

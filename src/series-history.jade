@@ -1,0 +1,42 @@
+template
+  .row
+    .col-sm-12
+      h3.underline Series History
+  .row
+    .col-sm-12
+      h4 ${series.quickStats.matchRecord}
+  .row
+    .col-sm-12
+      <strong>Game Record: </strong>&nbsp; <span>${series.quickStats.gameRecord}</span>
+  .row.pad-bottom-1em
+    .col-sm-12
+      <strong>Average Score: </strong>&nbsp; <span>${series.quickStats.avg}</span>
+  .row
+    .col-sm-12
+      h4.underline Matches
+  .row
+    .score-box
+      .row.pad-bottom-1em(repeat.for='match of series.matches')
+        .row
+          .col-xs-10.no-pad-left.col-xs-offset-2.text-left.italicize.text-silver.underline
+            ${match.formattedDate}
+        .row
+          .col-xs-2.text-right
+            i.fa.fa-check.text-success(show.bind='match.team1._id == match.winner')
+          .col-xs-5.no-pad-left.text-left
+            span ${match.team1.title}
+          .col-xs-1.no-pad(repeat.for='score of match.scores', class='${score.team1 > score.team2 ? "winning-score" \
+            : ""} ${score.team2 > score.team1 ? "losing-score" : ""}')
+            ${score.team1}
+        .row
+          .col-xs-2.text-right
+            i.fa.fa-check.text-success(show.bind='match.team2._id == match.winner')
+          .col-xs-5.no-pad-left.text-left
+            span ${match.team2.title}
+          .col-xs-1.no-pad(repeat.for='score of match.scores', class='${score.team2 > score.team1 ? "winning-score" \
+            : ""} ${score.team1 > score.team2 ? "losing-score" : ""}')
+            ${score.team2}
+        .row
+          .col-xs-10.no-pad-left.col-xs-offset-2.text-left.footnote
+            i.fa.fa-clock-o
+            | &nbsp;Match time: ${match.mins}m
