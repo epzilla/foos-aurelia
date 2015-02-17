@@ -139,7 +139,7 @@ MatchService.update = function (sock, data) {
 };
 
 MatchService.getRecentMatches = function (req, res) {
-  Match.find()
+  Match.find({ active: false })
     .sort({'endTime': 'desc'})
     .limit(req.param('num') || 10)
     .populate('team1 team2')

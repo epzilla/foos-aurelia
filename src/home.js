@@ -36,12 +36,6 @@ export class Home {
         this.matchInProgress = true;
         this.currentMatch = response.content[0];
         this.setUp();
-        
-        this.http.get(this.url + 'matches/recent').then(response => {
-          var recents = response.content;
-          this.formatMatches(recents);
-          this.recents = recents;
-        });
 
         this.http.get(this.url + 'matches/series?team1=' + this.currentMatch.team1._id +
           '&team2=' + this.currentMatch.team2._id).then(response => {
@@ -52,6 +46,12 @@ export class Home {
       } else {
         this.matchInProgress = false;
       }
+
+      this.http.get(this.url + 'matches/recent').then(response => {
+        var recents = response.content;
+        this.formatMatches(recents);
+        this.recents = recents;
+      });
     });
   }
 
