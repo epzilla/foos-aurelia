@@ -15,6 +15,8 @@ export class Home {
     this.moment = moment;
     this.players = this.ls.get('players') || [];
     this.teams = this.ls.get('teams') || [];
+    this.sort('players');
+    this.sort('teams');
     this.byTeam = false;
   }
 
@@ -28,13 +30,13 @@ export class Home {
       if (this.teams.toString() !== teams.toString()) {
         this.teams = teams;
         this.ls.set('teams', teams);
+        this.sort('teams');
       }
       if (this.players.toString() !== players.toString()) {
         this.players = players;
         this.ls.set('players', players);
+        this.sort('players');
       }
-      this.sort('teams');
-      this.sort('players');
     });
   }
 
