@@ -13,6 +13,8 @@ export class Home {
     this.url = this.options.apiUrl;
     this.http = http;
     this.moment = moment;
+    this.players = this.ls.get('players') || [];
+    this.teams = this.ls.get('teams') || [];
     this.byTeam = false;
   }
 
@@ -21,8 +23,16 @@ export class Home {
     let teamPromise = this.http.get(this.url + 'teams');
     let playerPromise = this.http.get(this.url + 'players');
     return Promise.all([teamPromise, playerPromise]).then(responses => {
-      this.teams = responses[0].content;
-      this.players = responses[1].content;
+      let teams = responses[0].content;
+      let players = responses[1].content;
+      if (this.teams.toString() !== teams.toString()) {
+        this.teams = teams;
+        this.ls.set('teams', teams);
+      }
+      if (this.players.toString() !== players.toString()) {
+        this.players = players;
+        this.ls.set('players', players);
+      }
       this.sort('teams');
       this.sort('players');
     });
