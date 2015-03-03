@@ -1,20 +1,10 @@
-@font-face
-  font-family 'Proxima Nova Regular'
-  src url('./fonts/proxima_nova_regular-webfont.eot')
-  src url('./fonts/proxima_nova_regular-webfont.eot?#iefix') format('embedded-opentype'),
-     url('./fonts/proxima_nova_regular-webfont.woff2') format('woff2'),
-     url('./fonts/proxima_nova_regular-webfont.woff') format('woff'),
-     url('./fonts/proxima_nova_regular-webfont.ttf') format('truetype'),
-     url('./fonts/proxima_nova_regular-webfont.svg#proxima_nova_rgregular') format('svg')
-  font-weight normal
-  font-style normal
-
-synapseBlue = #00ADD8
+@import url('http://fonts.googleapis.com/css?family=Lato:300,400,700,900,400italic')
+snappyBlue = #00ADD8
 tailsYellow = rgb(255, 232, 0)
 
 html
   body
-    font-family "Proxima Nova Regular", "Helvetica Neue", Helvetica, Arial, sans-serif
+    font-family "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif
     overflow-y scroll
     -webkit-overflow-scrolling touch
 
@@ -61,7 +51,7 @@ section
   color #888
 
 .current
-  border-bottom 4px solid synapseBlue
+  border-bottom 4px solid snappyBlue
   background linear-gradient(#eee, white)
   background linear-gradient(white, #eee)
 
@@ -236,13 +226,13 @@ label[for="by-team"]
 
 input#by-player[type=radio]:checked
   & ~ label[for="by-player"]
-    border-bottom 5px solid synapseBlue
+    border-bottom 5px solid snappyBlue
     font-weight bold
     color lighten(black, 20%)
 
 input#by-team[type=radio]:checked
   & ~ label[for="by-team"]
-    border-bottom 5px solid synapseBlue
+    border-bottom 5px solid snappyBlue
     font-weight bold
     color lighten(black, 20%)
 
@@ -333,9 +323,9 @@ input#by-team[type=radio]:checked
     font-size 1.5em
 
 .navbar-default
-  background-color synapseBlue !important
+  background-color snappyBlue !important
   .navbar-brand
-    color synapseBlue !important
+    color snappyBlue !important
   .navbar-toggle
     border-color whitesmoke !important
   .navbar-nav
@@ -345,7 +335,7 @@ input#by-team[type=radio]:checked
         font-size 18px !important
 
 .btn-primary
-  background-color synapseBlue !important
+  background-color snappyBlue !important
   border-color #0294B8 !important
 
 .btn-primary.active, .btn-primary.focus, .btn-primary:active, .btn-primary:focus, .btn-primary:hover, .open>.dropdown-toggle.btn-primary
