@@ -13,6 +13,7 @@ Before installing the project, make sure you have the following installed/config
 
 * [Git](http://git-scm.com/book/en/Getting-Started-Installing-Git) (`brew install git`)
 * [NodeJS and npm](http://nodejs.org/) (`brew install node`)
+* [MongoDB](https://www.mongodb.org/) (create database 'foos', with collections 'matches', 'players', and 'teams')
 * [Gulp](http://gulpjs.com) (`npm install -g gulp`)
 * [Bower](http://bower.io) (`npm install -g bower`)
 * [JSPM](http://jspm.io) (`npm install -g jspm`)
